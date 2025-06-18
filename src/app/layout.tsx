@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "sonner";
-import { LeftNavigation } from "@/components/shared/sideNavigation";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { Sidebar, SidebarProvider } from "@/components/ui/sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,11 +24,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
- <html lang="en">
+    <html lang="en">
       <body>
-        <SidebarProvider>
-          {children}
-        </SidebarProvider>
+        {/* <SidebarProvider> */}
+          <div className="flex w-screen">
+            <main className="w-screen">{children}</main>
+          </div>
+        {/* </SidebarProvider> */}
       </body>
     </html>
   );

@@ -1,9 +1,11 @@
-
-import { cookies } from "next/headers";
-import jwt from "jsonwebtoken";
+// lib/auth/getUser.ts
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 
 export function getUser() {
-  const token = cookies().get("_token")?.value;
+  const cookieStore = cookies();
+  const token = cookieStore.get('_token')?.value;
+
   if (!token) return null;
 
   try {

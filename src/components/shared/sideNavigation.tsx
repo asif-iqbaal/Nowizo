@@ -1,5 +1,5 @@
 import { Calendar, Home, Inbox, LogOut, Search, Settings } from "lucide-react"
-
+import Image from "next/image"
 import {
   Sidebar,
   SidebarContent,
@@ -52,14 +52,30 @@ export function LeftNavigation() {
   return (
     <Sidebar>
       <SidebarHeader> 
-        <img src="./nowizo.png" alt="logo" />
+        <div className="flex justify-center">
+      <Image
+      src="/logo.png" 
+      alt="logo"
+      width={100}      
+      height={100}      
+    />
+    </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
+        <SidebarGroup>
+            {items.map((items) => 
+               (
+                <Button className="m-1 p-1 flex justify-start">
+                    <items.icon size={20} />
+                    {items.title}
+                </Button>
+            
+            )
+            )}
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-          Logout
+          <Button variant={"destructive"}> Logout</Button>
       </SidebarFooter>
     </Sidebar>
   )

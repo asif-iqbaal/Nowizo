@@ -1,28 +1,19 @@
-// app/(dashboard)/layout.tsx
-import {Sidebar} from "@/components/ui/sidebar";
-import { Toaster } from "@/components/ui/sonner";
-import { getUser } from "@/lib/auth"; // implement logic to check user
-import { redirect } from "next/navigation";
+"use client"
 
-export default async function DashboardLayout({
+import { LeftNavigation } from '@/components/shared/sideNavigation'
+import { SidebarProvider } from '@/components/ui/sidebar'
+
+export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const user = await getUser(); // check cookie or session
-  
-  if (!user) {
-    // redirect to login if not authenticated
-    return redirect("/auth/login");
-  }
-
   return (
-    <div className="w-full h-screen flex flex-col md:flex-row font-inter">
-      <Sidebar />
-      <div className="max-h-screen overflow-auto flex-1 justify-center font-inter">
-        {children}
-        <Toaster />
+    <SidebarProvider>
+      <div className="flex">
+        <LeftNavigation/>
+        <main className="flex-1">{children}</main>
       </div>
-    </div>
-  );
+    </SidebarProvider>
+  )
 }
