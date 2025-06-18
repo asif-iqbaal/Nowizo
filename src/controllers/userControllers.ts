@@ -9,7 +9,7 @@ export async function createUser(request: NextRequest){
         await DBconnect();
         console.log("database connect");
         const reqBody = await request.json();
-        const {username, email, passoword} = reqBody;
+        const {username, email, password} = reqBody;
         const user = await User.findOne({email});
         if(user){
             return NextResponse.json(
@@ -18,11 +18,11 @@ export async function createUser(request: NextRequest){
             )
         }
         const salt = await bcryptjs.genSalt(10);
-        const hashedPassword = await bcryptjs.hash(passoword,salt);
+        const hashedPassword = await bcryptjs.hash(password,salt);
         const newUser = await User.create({
             username,
             email,
-            hashedPassword
+            password:hashedPassword
         })
         await newUser.save();
         const payload = {

@@ -1,63 +1,129 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { FcGoogle } from "react-icons/fc";
-import {Facebook} from "lucide-react"
+"use client";
+
+import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { useRouter } from "next/navigation";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { FcGoogle } from "react-icons/fc";
+import { Facebook } from "lucide-react";
+import { LoginSchema } from "@/validation";
+import { CreateUser } from "@/context";
+import { createUser, loginUser } from "@/action/auth";
+
+type SignFormValues = z.infer<typeof LoginSchema>;
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const router = useRouter();
+
+  const form = useForm<SignFormValues>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (data: SignFormValues) => {
+    try {
+    
+      let user = await loginUser(data)
+
+      console.log("user details after login up",user);
+
+    } catch (error:any) {
+      console.error("login error:", error);
+    }
+  };
+
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
-      <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Login to your account</h1>
-        <p className="text-muted-foreground text-sm text-balance">
-          Enter your email below to login to your account
+    <div className={cn("w-full max-w-md space-y-6", className)}>
+      <div className="text-center space-y-1">
+        <h1 className="text-2xl font-bold">Login your account</h1>
+        <p className="text-sm text-muted-foreground">
+          Enter your details below to login your account
         </p>
       </div>
-      <div className="grid gap-6">
-        <div className="grid gap-3">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4"  {...props}>
+                    
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="m@example.com" type="email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <Button type="submit" className="w-full">
+            Sign in
+          </Button>
+        </form>
+      </Form>
+
+      <div className="relative text-center text-sm">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
         </div>
-        <div className="grid gap-3">
-          <div className="flex items-center">
-            <Label htmlFor="password">Password</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Forgot your password?
-            </a>
-          </div>
-          <Input id="password" type="password" required />
-        </div>
-        <Button type="submit" className="w-full">
-          Login
-        </Button>
-        <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-          <span className="bg-background text-muted-foreground relative z-10 px-2">
-            Or continue with
-          </span>
-        </div>
-         <Button variant="outline" className="w-full">
-          <FcGoogle size={20} />
-          Login with Google
+        <span className="relative bg-background px-2 text-muted-foreground">
+          Or continue with
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Button variant="outline" className="w-full">
+          <FcGoogle className="mr-2" size={20} />
+          Sign up with Google
         </Button>
         <Button variant="outline" className="w-full">
-          <Facebook size={20}/>
-          Login with Facebook
+          <Facebook className="mr-2" size={20} />
+          Sign up with Facebook
         </Button>
       </div>
+
       <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
+        Don't have an account?{" "}
         <a href="/auth/signup" className="underline underline-offset-4">
           Sign up
         </a>
       </div>
-    </form>
-  )
+    </div>
+  );
 }

@@ -22,7 +22,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Facebook } from "lucide-react";
 import { SignupSchema } from "@/validation";
 import { CreateUser } from "@/context";
-import { SignUpUser } from "@/action/auth";
+import { createUser } from "@/action/auth";
 
 type SignFormValues = z.infer<typeof SignupSchema>;
 
@@ -43,12 +43,8 @@ export function SignForm({
 
   const onSubmit = async (data: SignFormValues) => {
     try {
-      let user : CreateUser;
-      user = await SignUpUser({
-        username:data.username,
-        email:data.email,
-        password:data.password
-      })
+    
+      let user = await createUser(data)
 
       console.log("user details after signed up",user);
 
@@ -58,7 +54,7 @@ export function SignForm({
   };
 
   return (
-    <div className={cn("w-full max-w-md space-y-6", className)} {...props}>
+    <div className={cn("w-full max-w-md space-y-6", className)} >
       <div className="text-center space-y-1">
         <h1 className="text-2xl font-bold">Create your account</h1>
         <p className="text-sm text-muted-foreground">
@@ -67,7 +63,7 @@ export function SignForm({
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" {...props}>
           <FormField
             control={form.control}
             name="username"
