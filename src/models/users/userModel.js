@@ -1,5 +1,4 @@
-import mongoose, { Schema, Document, models } from 'mongoose';
-
+import mongoose, { Schema, models } from 'mongoose';
 
 const userSchema = new Schema({
     username:{
@@ -17,10 +16,16 @@ const userSchema = new Schema({
         require:true,
         unique:true
     },
-    isAdmine:{
+    isAdmin:{
         type:Boolean,
         default:false
-    }
+    },
+    avatar:{
+        type:String,
+    },
+    like:{
+        type:Number,
+    },
 });
 
 

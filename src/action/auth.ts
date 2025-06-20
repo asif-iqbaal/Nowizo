@@ -7,6 +7,7 @@ import { DBconnect } from "@/dbConfig/dbConfige";
 import { NextRequest,NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { cookies } from "next/headers";
 
 export async function createUser(props:any){
     try {
@@ -35,9 +36,20 @@ export async function createUser(props:any){
                 userID:newUser._id
             }
         }
+
         const token = jwt.sign(payload,process.env.JWT_SECRET!,
             {expiresIn:'2h'}
-        )
+        );
+
+        (await cookies()).set({
+                    name: '_token',
+                    value: token,
+                    httpOnly: true,
+                    path: '/',
+                    secure: process.env.NODE_ENV === 'production',
+                    maxAge: 60 * 60 * 2 // 2 hours in seconds
+                    })
+
         return{ 
             token
         }

@@ -10,9 +10,9 @@ export default function DashboardLayout({
 }) {
   return (
     <SidebarProvider>
-      <div className="flex">
+      <div className="flex bg-black">
         <LeftNavigation/>
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 flex bg-black">{children}</main>
       </div>
     </SidebarProvider>
   )

@@ -27,7 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {/* <SidebarProvider> */}
-          <div className="flex w-screen">
+          <div className="flex w-screen bg-black">
             <main className="w-screen">{children}</main>
           </div>
         {/* </SidebarProvider> */}

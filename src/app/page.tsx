@@ -5,6 +5,6 @@ import { redirect } from "next/navigation";
 export default async function Home() {
    await DBconnect();
 
-     redirect('/dashboard/home');
+   redirect('/dashboard/home');
 
 }

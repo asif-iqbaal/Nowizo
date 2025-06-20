@@ -25,17 +25,18 @@ const items = [
     url: "#",
     icon: Inbox,
   },
-  {
-    title: "feed",
-    url: "#",
-    icon: Calendar,
-  },
+
   {
     title: "Search",
     url: "#",
     icon: Search,
   },
   {
+    title: "Profile",
+    url: "#",
+    icon: Settings,
+  },
+   {
     title: "Settings",
     url: "#",
     icon: Settings,
@@ -50,22 +51,24 @@ export function LeftNavigation() {
 
     // }
   return (
-    <Sidebar>
-      <SidebarHeader> 
-        <div className="flex justify-center">
-      <Image
+
+    <Sidebar className="bg-black">
+      <SidebarHeader className="p-4 bg-black"> 
+        <div className="flex bg-black">
+      {/* <Image
       src="/logo.png" 
       alt="logo"
       width={100}      
       height={100}      
-    />
+    /> */}
+    <i className="text-2xl font-stretch-80% font-bold text-white ">Nowizo</i>
     </div>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="bg-black">
         <SidebarGroup>
             {items.map((items) => 
                (
-                <Button className="m-1 p-1 flex justify-start">
+                <Button className="ml-1 mb-2 p-8 flex justify-start text-lg hover:bg-gray-800 cursor-pointer">
                     <items.icon size={20} />
                     {items.title}
                 </Button>
@@ -74,10 +77,11 @@ export function LeftNavigation() {
             )}
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-          <Button variant={"destructive"}> Logout</Button>
+      <SidebarFooter className="bg-black">
+          <Button variant={"destructive"} className="cursor-pointer"> Logout</Button>
       </SidebarFooter>
     </Sidebar>
+
   )
 }
   
