@@ -22,7 +22,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Facebook } from "lucide-react";
 import { SignupSchema } from "@/validation";
 import { CreateUser } from "@/context";
-import { createUser } from "@/action/auth";
+import { createUser } from "@/lib/action/auth";
 
 type SignFormValues = z.infer<typeof SignupSchema>;
 

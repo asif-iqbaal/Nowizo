@@ -8,6 +8,7 @@ import { NextRequest,NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { cookies } from "next/headers";
+import sendVerificationEmail from "@/lib/action/sendEmialVerification";
 
 export async function createUser(props:any){
     try {
@@ -28,8 +29,8 @@ export async function createUser(props:any){
             email,
             password:hashedPassword
         })
-        await newUser.save();
-        const payload = {
+       // await newUser.save();
+          const payload = {
             user :{
                 username:newUser.username,
                 email:newUser.email,
@@ -40,6 +41,12 @@ export async function createUser(props:any){
         const token = jwt.sign(payload,process.env.JWT_SECRET!,
             {expiresIn:'2h'}
         );
+        
+       const verificationLink = `http://localhost:3000/verify-email?token=${token}`;
+       sendVerificationEmail(email, verificationLink)
+                .then(() => console.log("✅ Email sent!"))
+                .catch((err) => console.error("❌ Error sending email:", err));
+     
 
         (await cookies()).set({
                     name: '_token',
@@ -51,7 +58,8 @@ export async function createUser(props:any){
                     })
 
         return{ 
-            token
+            token,
+            message:"check your email for verification"
         }
     } catch (error:any) {
         console.log("error signup",error);
