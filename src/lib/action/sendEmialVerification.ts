@@ -34,11 +34,7 @@ export default async function sendVerificationEmail(email: string, link: string)
   </div>
 `
 ,
-  }).then((info) => {
-    console.log("📧 Nodemailer response:", info);
-  });
-  console.log("server email", process.env.EMAIL_ADDRESS);
-  console.log("client email",email);
+  })
  } catch (error:any) {
     console.log(error);
  }

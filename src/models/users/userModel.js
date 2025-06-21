@@ -26,6 +26,10 @@ const userSchema = new Schema({
     like:{
         type:Number,
     },
+    isVerified:{
+        type:Boolean,
+        default:false
+    }
 });
 
 

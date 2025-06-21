@@ -54,7 +54,7 @@ export function SignForm({
   };
 
   return (
-    <div className={cn("w-full max-w-md space-y-6", className)} >
+    <div className={cn("w-full max-w-md space-y-6 text-white", className)} >
       <div className="text-center space-y-1">
         <h1 className="text-2xl font-bold">Create your account</h1>
         <p className="text-sm text-muted-foreground">
@@ -121,7 +121,7 @@ export function SignForm({
         </span>
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 text-black">
         <Button variant="outline" className="w-full">
           <FcGoogle className="mr-2" size={20} />
           Sign up with Google
