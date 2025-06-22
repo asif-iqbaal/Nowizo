@@ -31,11 +31,9 @@ export async function createUser(props:any){
         })
        // await newUser.save();
           const payload = {
-            user :{
                 username:newUser.username,
                 email:newUser.email,
-                userID:newUser._id
-            }
+                userID:newUser._id  
         }
 
         const token = jwt.sign(payload,process.env.JWT_SECRET!,
@@ -92,16 +90,23 @@ export async function loginUser(props:any){
         }
 
         const payload = {
-            user: {
                 username:user.username,
                 userID:user._id,
                 email:user.email
-            }
         }
 
         const token = jwt.sign(payload,process.env.JWT_SECRET!,
             {expiresIn:'2h'}
-        )
+        );
+
+         (await cookies()).set({
+                    name: '_token',
+                    value: token,
+                    httpOnly: true,
+                    path: '/',
+                    secure: process.env.NODE_ENV === 'production',
+                    maxAge: 60 * 60 * 2 // 2 hours in seconds
+                    })
 
         return {
             token,

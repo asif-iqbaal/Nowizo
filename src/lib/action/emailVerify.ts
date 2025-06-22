@@ -8,8 +8,8 @@ export async function verifyEmail(token: string) {
   await DBconnect();
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    const user = await User.findById(decoded.user.userID);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {userID:string};
+    const user = await User.findById(decoded.userID);
     if (!user) return { success: false, message: "User not found" };
 
     if (user.isVerified) return { success: true, message: "Email already verified" };

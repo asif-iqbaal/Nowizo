@@ -14,7 +14,12 @@ const postSchema = new Schema({
         type:String,
         required:true
     },
-   
+   likes:{
+    type:Number,
+   },
+   commnets:{
+    type:String,
+   }
 },
  {
     timestamps: true,
