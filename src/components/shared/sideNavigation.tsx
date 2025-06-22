@@ -37,17 +37,17 @@ import { PostContent } from "@/lib/action/createPost";
 const items = [
   {
     title: "Home",
-    url: "/home",
+    url: "/dashboard/home",
     icon: Home,
   },
   {
     title: "Inbox",
-    url: "/inbox",
+    url: "/dashboard/inbox",
     icon: Inbox,
   },
   {
     title: "Search",
-    url: "/search",
+    url: "/dashboard/search",
     icon: Search,
   },
   {
@@ -57,12 +57,12 @@ const items = [
   },
   {
     title: "Profile",
-    url: "/profile",
+    url: "/dashboard/profile",
     icon: Settings,
   },
   {
     title: "Settings",
-    url: "/settings",
+    url: "/dashboard/settings",
     icon: Settings,
   },
 ];

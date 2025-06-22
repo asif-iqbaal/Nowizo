@@ -1,4 +1,6 @@
 // lib/auth/getUser.ts
+"use server"
+
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 

@@ -1,6 +1,38 @@
+"use client"
+
 import { GalleryVerticalEnd } from "lucide-react"
 import { LoginForm } from "@/components/ui/login-form"
+import { useEffect,useState } from "react";
+import { useRouter } from "next/navigation";
+import { getUser } from "@/lib/auth";
+//import Loading from "@/components/ui/loading";
+import {Loader2} from 'lucide-react'
 export default function LoginPage() {
+   const [loading,setLoading] = useState<boolean>(false);
+   const router = useRouter();
+   useEffect(() => {
+    async function checkUser() {
+      setLoading(true);
+      const user = await getUser();
+      if (user) {
+        router.push("/dashboard/home");
+      } else {
+        setLoading(false); // only turn off loading if not redirecting
+      }
+    }
+  
+    checkUser();
+  }, []);
+
+    if(loading){
+      return(
+        <>
+        <div className="w-screen h-screen flex justify-center items-center text-white">
+          <Loader2 />
+        </div>
+        </>
+      )
+    }
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">

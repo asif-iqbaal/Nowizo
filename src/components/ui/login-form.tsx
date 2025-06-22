@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-
+import Loading from "./loading";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +23,7 @@ import { Facebook } from "lucide-react";
 import { LoginSchema } from "@/validation";
 import { CreateUser } from "@/context";
 import { createUser, loginUser } from "@/lib/action/auth";
+import { getUser } from "@/lib/auth";
 
 type SignFormValues = z.infer<typeof LoginSchema>;
 
@@ -31,6 +32,23 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"form">) {
   const router = useRouter();
+  const [loading,setLoading] = useState<boolean>(false);
+  const [bottonLoading,setButtonLoading] = useState<boolean>(false);
+
+ useEffect(() => {
+  async function checkUser() {
+    setLoading(true);
+    const user = await getUser();
+    if (user) {
+      router.push("/dashboard/home");
+    } else {
+      setLoading(false); // only turn off loading if not redirecting
+    }
+  }
+
+  checkUser();
+}, []);
+
 
   const form = useForm<SignFormValues>({
     resolver: zodResolver(LoginSchema),
@@ -43,17 +61,19 @@ export function LoginForm({
   const onSubmit = async (data: SignFormValues) => {
     try {
     
-      let user = await loginUser(data)
+      let user = await loginUser(data);
 
-      console.log("user details after login up",user);
+      if(user)
+      router.push('/dashboard/home');
 
     } catch (error:any) {
       console.error("login error:", error);
     }
   };
 
+
   return (
-    <div className={cn("w-full max-w-md space-y-6", className)}>
+    <div className={cn("w-full max-w-md space-y-6 text-white", className)}>
       <div className="text-center space-y-1">
         <h1 className="text-2xl font-bold">Login your account</h1>
         <p className="text-sm text-muted-foreground">
