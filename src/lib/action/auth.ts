@@ -14,7 +14,7 @@ export async function createUser(props:any){
     try {
         await DBconnect();
         // const reqBody = await request.json();
-        const {username, email, password} = props;
+        const {username, email, password, displayName} = props;
         const user = await User.findOne({email});
         if(user){
             return{ 
@@ -26,6 +26,7 @@ export async function createUser(props:any){
         const hashedPassword = await bcryptjs.hash(password,salt);
         const newUser = await User.create({
             username,
+            displayName,
             email,
             password:hashedPassword
         })
@@ -33,6 +34,7 @@ export async function createUser(props:any){
           const payload = {
                 username:newUser.username,
                 email:newUser.email,
+                displayName:newUser.displayName,
                 userID:newUser._id  
         }
 
@@ -92,6 +94,7 @@ export async function loginUser(props:any){
         const payload = {
                 username:user.username,
                 userID:user._id,
+                displayName:user.displayName,
                 email:user.email
         }
 

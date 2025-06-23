@@ -6,6 +6,9 @@ const userSchema = new Schema({
         require:true,
         unique:true
     },
+    displayName:{
+        type:String,
+    },
     email:{
         type:String,
         require:true,
@@ -25,6 +28,7 @@ const userSchema = new Schema({
     },
     like:{
         type:Number,
+        default:0,
     },
     isVerified:{
         type:Boolean,
@@ -32,9 +36,19 @@ const userSchema = new Schema({
     },
     followers:{
         type:Number,
+        default:0,
     },
     following:{
         type:Number,
+        default:0,
+    },
+    bio:{
+        type:String,
+        default:"hey there i am using NoWiZo"
+    },
+    posts:{
+        type:Number,
+        default:0,
     }
 });
 

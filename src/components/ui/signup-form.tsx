@@ -38,6 +38,7 @@ export function SignForm({
       username: "",
       email: "",
       password: "",
+      displayName:"",
     },
   });
 
@@ -45,8 +46,6 @@ export function SignForm({
     try {
     
       let user = await createUser(data)
-
-      console.log("user details after signed up",user);
 
     } catch (error:any) {
       console.error("Signup error:", error);
@@ -77,7 +76,21 @@ export function SignForm({
               </FormItem>
             )}
           />
-          
+
+             <FormField
+            control={form.control}
+            name="displayName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Display Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="example" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="email"

@@ -1,6 +1,7 @@
 "use server";
 
 import { getUser } from '@/lib/auth';
+import { User } from '@/models/users/userModel';
 import { Post } from '@/models/post/postModel';
 import { redirect } from 'next/navigation';
 import { DBconnect } from '@/dbConfig/dbConfige';
@@ -34,14 +35,19 @@ export async function PostContent(props: { file: File; caption: string }) {
       });
 
       imageURL = result.secure_url;
-    }
+    } 
 
     const newPost = await Post.create({
       user:user.userID,
       image: imageURL,
       caption,
     });
-
+    
+    await User.findByIdAndUpdate(
+      user.userID,
+      { $inc: { posts: 1 } },
+      { new: true }
+    );
     return {
       message: 'Post successfully',
       status: 200,
