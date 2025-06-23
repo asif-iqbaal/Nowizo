@@ -16,10 +16,16 @@ const postSchema = new Schema({
     },
    likes:{
     type:Number,
+    default:0
    },
    commnets:{
     type:String,
-   }
+   },
+   type:{
+    type:String,
+    enum:["post","tagged","saved"],
+    default:"post",
+   },
 },
  {
     timestamps: true,

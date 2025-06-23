@@ -141,7 +141,7 @@ export default function UserSearch() {
   }
 
   return (
-    <div className="w-[80vw]  mx-auto bg-white border rounded-lg overflow-hidden">
+    <div className="w-[80vw]  mx-auto bg-black text-white border rounded-lg overflow-hidden">
       {/* Header */}
       {/* <div className="p-4 border-b bg-gradient-to-r from-purple-500 to-pink-500">
         <div className="flex items-center space-x-3">
@@ -153,7 +153,7 @@ export default function UserSearch() {
       </div> */}
 
       {/* Search Input */}
-      <div className="p-4 border-b bg-gray-50">
+      <div className="p-4 border-b ">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
@@ -161,7 +161,7 @@ export default function UserSearch() {
             placeholder="Search users..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-white border-gray-200 focus:border-purple-500 focus:ring-purple-500"
+            className="pl-10 bg-gray-950 border-gray-200 focus:border-purple-500 focus:ring-purple-500"
           />
         </div>
       </div>
@@ -183,13 +183,13 @@ export default function UserSearch() {
         ) : (
           <div className="divide-y">
             {filteredUsers.map((user) => (
-              <Card key={user._id} className="border-0 rounded-none shadow-none">
+              <Card key={user._id} className="border-0 rounded-none shadow-none bg-gray-900 text-white">
                 <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between bg-gray-900 text-white">
                     <div className="flex items-center space-x-3 flex-1 min-w-0">
                       <Avatar className="h-12 w-12 flex-shrink-0">
                         <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.username} />
-                        <AvatarFallback>{user.username?.slice(0, 2).toUpperCase()}</AvatarFallback>
+                        <AvatarFallback className="bg-gray-700 text-white">{user.username?.slice(0, 2).toUpperCase()}</AvatarFallback>
                       </Avatar>
 
                       <div className="flex-1 min-w-0">
@@ -199,17 +199,17 @@ export default function UserSearch() {
                           </Link>
                         </div>
 
-                        <p className="text-gray-600 text-sm truncate mb-1">{user?.displayName || "User"}</p>
+                        <p className="text-white text-sm truncate mb-1">{user?.displayName || "User"}</p>
 
-                        <p className="text-gray-500 text-xs truncate mb-2">{user?.bio || "hey there i am using NoWiZo "}</p>
+                        <p className="text-white text-xs truncate mb-2">{user?.bio || "hey there i am using NoWiZo "}</p>
 
                         <div className="flex items-center space-x-4 text-xs text-gray-500">
                           <span>
-                            <span className="font-semibold text-black">{user.followers?.toLocaleString()}</span>{" "}
+                            <span className="font-semibold text-white">{user.followers?.toLocaleString()}</span>{" "}
                             followers
                           </span>
                           <span>
-                            <span className="font-semibold text-black">{user.following?.toLocaleString()}</span>{" "}
+                            <span className="font-semibold text-white">{user.following?.toLocaleString()}</span>{" "}
                             following
                           </span>
                         </div>
@@ -240,8 +240,8 @@ export default function UserSearch() {
 
       {/* Search Stats */}
       {searchQuery.trim() !== "" && filteredUsers.length > 0 && (
-        <div className="p-3 border-t bg-gray-50 text-center">
-          <p className="text-xs text-gray-500">
+        <div className="p-3 border-t bg-gray-900 text-center">
+          <p className="text-xs text-white">
             Found {filteredUsers.length} user{filteredUsers.length !== 1 ? "s" : ""}
             matching "{searchQuery}"
           </p>

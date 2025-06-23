@@ -128,11 +128,11 @@ export function LoginForm({
       </div>
 
       <div className="flex flex-col gap-2">
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full bg-black text-white">
           <FcGoogle className="mr-2" size={20} />
           Sign up with Google
         </Button>
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full bg-black text-white">
           <Facebook className="mr-2" size={20} />
           Sign up with Facebook
         </Button>

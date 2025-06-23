@@ -33,6 +33,7 @@ import { CreatePostSchema } from "@/validation";
 import {useForm} from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PostContent } from "@/lib/action/createPost";
+import { Logout } from "@/lib/action/auth";
 
 const items = [
   {
@@ -115,10 +116,10 @@ export function LeftNavigation() {
         throw(error);
       }
   }
-
-  // if(preview){
-  //   console.log(preview);
-  // }
+  const handleLogout = async () => {
+    await Logout();
+    router.push('/auth/login');
+  }
   return (
     <>
       <Sidebar className="bg-black">
@@ -144,7 +145,7 @@ export function LeftNavigation() {
         </SidebarContent>
 
         <SidebarFooter className="bg-black">
-          <Button variant={"destructive"} className="cursor-pointer">
+          <Button variant={"destructive"} className="cursor-pointer" onClick={handleLogout} >
             Logout
           </Button>
         </SidebarFooter>

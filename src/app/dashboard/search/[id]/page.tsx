@@ -4,11 +4,11 @@ import React,{ useEffect, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowLeft, Verified, Grid3X3, Bookmark, Tag, MoreHorizontal, MapPin, LinkIcon, Calendar } from "lucide-react"
+import { ArrowLeft, Verified, Grid3X3, Bookmark, Tag, MoreHorizontal, MapPin, LinkIcon, Calendar,Heart,MessageCircle } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from 'next/navigation'; 
-import { GetUserById } from "@/lib/action/searchUser"
+import { GetUserById, SeachUserPosts } from "@/lib/action/searchUser"
 
 // Mock user data - in real app, this would come from props or API
 // const userData = {
@@ -28,71 +28,6 @@ import { GetUserById } from "@/lib/action/searchUser"
 // }
 
 // Mock posts data
-const userPosts = [
-  {
-    id: 1,
-    image: "/placeholder.svg?height=300&width=300",
-    likes: 234,
-    comments: 12,
-    type: "post",
-  },
-  {
-    id: 2,
-    image: "/placeholder.svg?height=300&width=300",
-    likes: 456,
-    comments: 23,
-    type: "post",
-  },
-  {
-    id: 3,
-    image: "/placeholder.svg?height=300&width=300",
-    likes: 789,
-    comments: 45,
-    type: "post",
-  },
-  {
-    id: 4,
-    image: "/placeholder.svg?height=300&width=300",
-    likes: 123,
-    comments: 8,
-    type: "post",
-  },
-  {
-    id: 5,
-    image: "/placeholder.svg?height=300&width=300",
-    likes: 567,
-    comments: 34,
-    type: "post",
-  },
-  {
-    id: 6,
-    image: "/placeholder.svg?height=300&width=300",
-    likes: 890,
-    comments: 56,
-    type: "post",
-  },
-  {
-    id: 7,
-    image: "/placeholder.svg?height=300&width=300",
-    likes: 345,
-    comments: 19,
-    type: "post",
-  },
-  {
-    id: 8,
-    image: "/placeholder.svg?height=300&width=300",
-    likes: 678,
-    comments: 28,
-    type: "post",
-  },
-  {
-    id: 9,
-    image: "/placeholder.svg?height=300&width=300",
-    likes: 432,
-    comments: 15,
-    type: "post",
-  },
-]
 
 interface UserProfileProps {
   userId?: string
@@ -102,31 +37,32 @@ export default function UserProfile() {
     const params = useParams();
     const id = params.id as string;
    const [userData,setUserData] = useState<any>(null);
+   const [usersPosts,setUsersPosts] = useState<any[]>([]);
   const [isFollowing, setIsFollowing] = useState(userData?.isFollowing)
   const [activeTab, setActiveTab] = useState("posts");
 
-  useEffect(()=>{
-    const getUserDetails = async () => {
-       if(id){
-         const response = await GetUserById(id);
-        setUserData(response);
-       }else{
-        console.log("error");
-       }
-    }
-    getUserDetails();
-  },[id])
+useEffect(() => {
+  const fetchUser = async () => {
+    const rawUser = await SeachUserPosts(id);
+    //const safeUser = JSON.parse(JSON.stringify(rawUser));
+    console.log(rawUser.userPosts);
+    setUserData(rawUser);
+    setUsersPosts(rawUser.userPosts);
+  };
+  fetchUser();
+}, [id]);
+
   const handleFollowToggle = () => {
     setIsFollowing(!isFollowing)
   }
-
+console.log("post from user",usersPosts);
   return (
-  <div className="w-full mx-auto bg-white border  overflow-y-scroll">
+  <div className="w-full mx-auto bg-black text-white border  overflow-y-scroll p-2">
       {/* Header */}
-      <div className="p-4 border-b bg-gradient-to-r from-purple-500 to-pink-500">
+      <div className="p-4 border-b bg-black">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Link href="/search">
+            <Link href="/dashboard/search">
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
                 <ArrowLeft className="h-5 w-5" />
               </Button>
@@ -145,8 +81,8 @@ export default function UserProfile() {
       <div className="p-6">
         <div className="flex items-start space-x-4 mb-4">
           <Avatar className="h-20 w-20">
-            <AvatarImage src={userData?.avatar || "/logo.png"} alt={userData?.username} />
-            <AvatarFallback className="text-lg">{userData?.username?.slice(0, 2).toUpperCase()}</AvatarFallback>
+           { userData?.avatar?(<AvatarImage src={userData?.avatar || "/logo.png"} alt={userData?.username} />):(
+            <AvatarFallback className="text-lg text-black font-semibold">{userData?.username?.slice(0, 2).toUpperCase()}</AvatarFallback>)}
           </Avatar>
 
           <div className="flex-1">
@@ -194,7 +130,8 @@ export default function UserProfile() {
         </div> */}
 
         {/* Action Buttons */}
-        <div className="flex space-x-2 mb-6">
+        <div className="flex w-full justify-end">
+        <div className="flex space-x-2 mb-6 w-[50vw] ">
           <Button
             onClick={handleFollowToggle}
             className={`flex-1 ${
@@ -205,13 +142,14 @@ export default function UserProfile() {
           >
             {isFollowing ? "Following" : "Follow"}
           </Button>
-          <Button variant="outline" className="flex-1">
+          <Button variant="outline" className="flex-1 bg-gray-950">
             Message
           </Button>
         </div>
+        </div>
 
         {/* Highlights/Stories */}
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <div className="flex space-x-4 overflow-x-auto pb-2">
             {["SaaS Tips", "Code", "Design", "Growth"].map((highlight, index) => (
               <div key={index} className="flex flex-col items-center space-y-1 min-w-0">
@@ -224,7 +162,7 @@ export default function UserProfile() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Content Tabs */}
@@ -244,19 +182,20 @@ export default function UserProfile() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="posts" className="mt-0">
+        <TabsContent value="posts" className="mt-0"> 
           <div className="grid grid-cols-3 gap-1">
-            {userPosts.map((post) => (
-              <div key={post.id} className="aspect-square relative group cursor-pointer">
-                <Image src={post.image || "/placeholder.svg"} alt={`Post ${post.id}`} fill className="object-cover" />
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
-                  <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
-                      <span className="text-sm font-semibold">{post.likes}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <span className="text-sm font-semibold">{post.comments}</span>
-                    </div>
+            {usersPosts.map((post) => (
+              <div className="flex flex-col cursor-pointer">
+                <img src={post.image} alt="" />
+                <div className="text-sm font-thin font-serif p-1 ">{post.caption}</div>
+                <div className="flex ">
+                  <div className="p-1">
+                    <Heart />
+                    <p>{post.likes}</p>
+                  </div>
+                  <div className="p-1">
+                    <MessageCircle />
+                   <p>{post.commnets}</p> 
                   </div>
                 </div>
               </div>

@@ -49,7 +49,13 @@ const userSchema = new Schema({
     posts:{
         type:Number,
         default:0,
+    },
+    userPosts:[
+    { 
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'Post'
     }
+    ]
 });
 
 

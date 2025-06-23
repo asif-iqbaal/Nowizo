@@ -43,11 +43,15 @@ export async function PostContent(props: { file: File; caption: string }) {
       caption,
     });
     
-    await User.findByIdAndUpdate(
-      user.userID,
-      { $inc: { posts: 1 } },
-      { new: true }
-    );
+   await User.findByIdAndUpdate(
+  user.userID,
+  {
+    $inc: { posts: 1 },
+    $push: { userPosts: newPost._id }
+  },
+  { new: true }
+);
+
     return {
       message: 'Post successfully',
       status: 200,

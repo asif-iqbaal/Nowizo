@@ -84,8 +84,8 @@ const posts = [
 
 export default function HomeFeed() {
   return (
-    <div className="flex justify-center w-[80vw] bg-black text-white">
-    <div className=" mx-auto border rounded-lg overflow-hidden h-screen  bg-black text-white">
+    <div className="flex justify-center  bg-black text-white overflow-x-hidden w-full">
+    <div className=" mx-auto border rounded-lg overflow-hidden h-screen  bg-black text-white ml-2 p-2 overflow-x-hidden">
       {/* Header */}
       
 

@@ -122,3 +122,15 @@ export async function loginUser(props:any){
         }
     }
 }
+
+export async function Logout(){
+    try {
+        const cookiesStore = cookies();
+       (await cookiesStore).set("_token","",{
+        path:'/',
+        maxAge:0
+       });
+    } catch (error:any) {
+        throw(error);
+    }
+}
