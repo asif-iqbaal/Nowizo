@@ -123,6 +123,17 @@ export async function loginUser(props:any){
     }
 }
 
+// export async function LoggedUser(){
+//     try {
+//         const cookiesStore = cookies();
+//         const response = (await cookiesStore).get("_token")?.value;
+
+
+//     } catch (error:any) 
+//     {
+//         throw(error);
+//     }
+// }
 export async function Logout(){
     try {
         const cookiesStore = cookies();

@@ -9,6 +9,10 @@ import {
   Search,
   Settings,
   PlusIcon,
+  User,
+  Icon,
+  Menu,
+  X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
@@ -24,6 +28,7 @@ import {
   SidebarGroup,
   SidebarFooter,
   SidebarHeader,
+  SidebarProvider
 } from "@/components/ui/sidebar";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -59,7 +64,7 @@ const items = [
   {
     title: "Profile",
     url: "/dashboard/profile",
-    icon: Settings,
+    icon: User,
   },
   {
     title: "Settings",
@@ -70,8 +75,15 @@ const items = [
 
 type PostFormValue = z.infer<typeof CreatePostSchema>
 
-export function LeftNavigation() {
-  const [openDialog, setOpenDialog] = useState(false);
+export function LeftNavigation({
+  isCollapse,
+  toggleCollapse
+}:{
+  isCollapse:boolean,
+  toggleCollapse: () => void
+}) {
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  // const [isCollapse,setIsCollapse] = useState<boolean>(false);
   const [preview,setPreview] = useState("");
   const [step,setSteps] = useState<number>(1);
   const router = useRouter();
@@ -120,34 +132,63 @@ export function LeftNavigation() {
     await Logout();
     router.push('/auth/login');
   }
+
+  const handleMenu = () => {
+    toggleCollapse()
+  }
   return (
     <>
-      <Sidebar className="bg-black">
-        <SidebarHeader className="p-4 bg-black">
+
+      <Sidebar className={`bg-black transition-transform  flex-row justify-between ${isCollapse?"w-20":"w-64"}`}>
+        <SidebarHeader className={`p-4 bg-black flex transition-transform  flex-row justify-between `}>
           <div className="flex bg-black">
-            <i className="text-2xl font-bold text-white">Nowizo</i>
+         {!isCollapse  &&  <i className="text-2xl font-bold text-white">Nowizo</i>}
           </div>
+          <Button
+           variant='ghost'
+           size='icon'
+           onClick={()=>handleMenu()}
+           className="bg-white text-black"
+           >
+            {isCollapse?<Menu size={20} /> : <X size={20} />}
+          </Button>
         </SidebarHeader>
 
         <SidebarContent className="bg-black">
           <SidebarGroup>
             {items.map((item) => (
-              <Button
+             !isCollapse?( <Button
                 key={item.title}
                 onClick={() => handleItemClick(item.title, item.url)}
                 className="ml-1 mb-2 p-8 flex justify-start text-lg hover:bg-gray-800 cursor-pointer gap-2 text-white"
               >
                 <item.icon size={20} />
-                {item.title}
-              </Button>
+                {item.title} 
+              </Button>):
+              (
+                <Button
+                key={item.title}
+                onClick={() => handleItemClick(item.title, item.url)}
+                className="ml-1 mb-2 p-6 flex  justify-center hover:bg-gray-800 cursor-pointer gap-2 text-white"
+                >
+                   <item.icon size={20} />
+                </Button>
+              )
             ))}
           </SidebarGroup>
         </SidebarContent>
 
         <SidebarFooter className="bg-black">
-          <Button variant={"destructive"} className="cursor-pointer" onClick={handleLogout} >
+         
+          {!isCollapse ? <Button variant={"destructive"} className="cursor-pointer" onClick={handleLogout} >
             Logout
-          </Button>
+          </Button> : <Button
+                    variant="destructive"
+                    size='icon'
+                    className="cursor-pointer"
+                    onClick={handleLogout}>  
+                    <LogOut />
+                    </Button>}
         </SidebarFooter>
       </Sidebar>
 
