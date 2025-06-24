@@ -57,7 +57,7 @@ useEffect(() => {
   }
 console.log("post from user",usersPosts);
   return (
-  <div className="w-full mx-auto bg-black text-white border  overflow-y-scroll p-2">
+  <div className="w-full mx-auto bg-black text-white border overflow-hidden  p-2">
       {/* Header */}
       <div className="p-4 border-b bg-black">
         <div className="flex items-center justify-between">
@@ -186,7 +186,7 @@ console.log("post from user",usersPosts);
           <div className="grid grid-cols-3 gap-1">
             {usersPosts.map((post) => (
               <div className="flex flex-col cursor-pointer">
-                <img src={post.image} alt="" />
+                <img src={post.image} alt="images" className="h-[60%]" />
                 <div className="text-sm font-thin font-serif p-1 ">{post.caption}</div>
                 <div className="flex ">
                   <div className="p-1">

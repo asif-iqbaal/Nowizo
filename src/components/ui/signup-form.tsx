@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React,{useState} from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,6 +23,7 @@ import { Facebook } from "lucide-react";
 import { SignupSchema } from "@/validation";
 import { CreateUser } from "@/context";
 import { createUser } from "@/lib/action/auth";
+import { toast } from "sonner";
 
 type SignFormValues = z.infer<typeof SignupSchema>;
 
@@ -30,7 +31,7 @@ export function SignForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
-  const router = useRouter();
+  const [loading,setLoading] = useState<boolean>(false);
 
   const form = useForm<SignFormValues>({
     resolver: zodResolver(SignupSchema),
@@ -44,11 +45,16 @@ export function SignForm({
 
   const onSubmit = async (data: SignFormValues) => {
     try {
-    
+      setLoading(true)
       let user = await createUser(data)
-
+      if(user){
+        toast("Signed Up Successfully \n Please Verify yourself from email")
+        setLoading(false);
+      }
     } catch (error:any) {
       console.error("Signup error:", error);
+    } finally{
+      setLoading(false);
     }
   };
 

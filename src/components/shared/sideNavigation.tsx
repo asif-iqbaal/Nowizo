@@ -39,7 +39,7 @@ import {useForm} from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PostContent } from "@/lib/action/createPost";
 import { Logout } from "@/lib/action/auth";
-
+import {toast} from "sonner";
 const items = [
   {
     title: "Home",
@@ -84,6 +84,7 @@ export function LeftNavigation({
 }) {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   // const [isCollapse,setIsCollapse] = useState<boolean>(false);
+
   const [preview,setPreview] = useState("");
   const [step,setSteps] = useState<number>(1);
   const router = useRouter();
@@ -91,8 +92,8 @@ export function LeftNavigation({
   const form = useForm<PostFormValue>({
     resolver: zodResolver(CreatePostSchema),
    defaultValues: {
-  file: null,
-  caption: '',
+   file: null,
+   caption: '',
 }
 
   })
@@ -118,19 +119,22 @@ export function LeftNavigation({
 
   const  handleSubmit = async (data:PostFormValue) =>{
       try {
-        console.log("✅ Submit triggered");
-        console.log("📷 Image file:", data.file);
-        console.log("📝 Caption:", data.caption);
         let post  = await PostContent(data);
 
-        console.log("post details",post);
+        if(post){
+          toast(post.message);
+          setSteps(1);
+          setOpenDialog(false);
+        }
+        
       } catch (error:any) {
-        throw(error);
+        toast(error.message);
       }
   }
   const handleLogout = async () => {
     await Logout();
     router.push('/auth/login');
+    toast("Logged out");
   }
 
   const handleMenu = () => {

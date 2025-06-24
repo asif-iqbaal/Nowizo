@@ -24,6 +24,8 @@ import { LoginSchema } from "@/validation";
 import { CreateUser } from "@/context";
 import { createUser, loginUser } from "@/lib/action/auth";
 import { getUser } from "@/lib/auth";
+import {toast} from "sonner";
+import Spinner from "./loader";
 
 type SignFormValues = z.infer<typeof LoginSchema>;
 
@@ -34,6 +36,7 @@ export function LoginForm({
   const router = useRouter();
   const [loading,setLoading] = useState<boolean>(false);
   const [bottonLoading,setButtonLoading] = useState<boolean>(false);
+   const [login,setLogin] = useState<boolean>(false);
 
  useEffect(() => {
   async function checkUser() {
@@ -60,17 +63,17 @@ export function LoginForm({
 
   const onSubmit = async (data: SignFormValues) => {
     try {
-    
+      setLogin(true);
       let user = await loginUser(data);
-
+      toast("Logged In Successfully")
       if(user)
       router.push('/dashboard/home');
-
+  
     } catch (error:any) {
-      console.error("login error:", error);
+      toast(error.message);
+      setLogin(false);
     }
   };
-
 
   return (
     <div className={cn("w-full max-w-md space-y-6 text-white", className)}>
@@ -112,9 +115,9 @@ export function LoginForm({
             )}
           />
           
-          <Button type="submit" className="w-full">
+          {!login ? <Button type="submit" className="w-full">
             Sign in
-          </Button>
+          </Button> : <Button className="w-full "> <Spinner /> </Button>}
         </form>
       </Form>
 

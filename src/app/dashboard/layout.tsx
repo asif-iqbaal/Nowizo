@@ -3,7 +3,7 @@
 import React,{useState} from 'react'
 import { LeftNavigation } from '@/components/shared/sideNavigation'
 import { SidebarProvider } from '@/components/ui/sidebar'
-
+import { Toaster } from '@/components/ui/sonner'
 export default function DashboardLayout({
   children,
 }: {
@@ -15,7 +15,7 @@ export default function DashboardLayout({
   }
   return (
     <SidebarProvider>
-      <div className="flex bg-black w-screen h-screen transition-all">
+      <div className="flex bg-black w-screen h-screen transition-all overflow-hidden overflow-y-scroll">
         <div className={`transition-all duration-200  ${isCollapse?"w-20":"w-64"}`}>
         <LeftNavigation isCollapse={isCollapse} toggleCollapse={handleToggle}/>
         </div>
@@ -24,6 +24,7 @@ export default function DashboardLayout({
         >
           {children}
         </main>
+        <Toaster position='top-center' className='bg-gray-950 text-white'/>
       </div>
     </SidebarProvider>
   )

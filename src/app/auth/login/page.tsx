@@ -5,10 +5,12 @@ import { LoginForm } from "@/components/ui/login-form"
 import { useEffect,useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUser } from "@/lib/auth";
+
 //import Loading from "@/components/ui/loading";
 import {Loader2} from 'lucide-react'
 export default function LoginPage() {
    const [loading,setLoading] = useState<boolean>(false);
+  
    const router = useRouter();
    useEffect(() => {
     async function checkUser() {
@@ -17,7 +19,7 @@ export default function LoginPage() {
       if (user) {
         router.push("/dashboard/home");
       } else {
-        setLoading(false); // only turn off loading if not redirecting
+        setLoading(false);
       }
     }
   
@@ -37,7 +39,7 @@ export default function LoginPage() {
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
-          <a href="#" className="flex items-center gap-2 font-bold">
+          <a href="#" className="flex items-center gap-2 font-bold text-white">
             <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
               <GalleryVerticalEnd className="size-4" />
             </div>
