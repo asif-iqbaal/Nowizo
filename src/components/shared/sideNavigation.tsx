@@ -83,7 +83,7 @@ export function LeftNavigation({
   toggleCollapse: () => void
 }) {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-  // const [isCollapse,setIsCollapse] = useState<boolean>(false);
+  const [loading,setLoading] = useState<boolean>(false);
 
   const [preview,setPreview] = useState("");
   const [step,setSteps] = useState<number>(1);
@@ -119,16 +119,21 @@ export function LeftNavigation({
 
   const  handleSubmit = async (data:PostFormValue) =>{
       try {
+        setLoading(true);
         let post  = await PostContent(data);
 
         if(post){
           toast(post.message);
           setSteps(1);
+          setLoading(false);
           setOpenDialog(false);
         }
         
       } catch (error:any) {
         toast(error.message);
+        setLoading(false);
+      }finally{
+        setLoading(false);
       }
   }
   const handleLogout = async () => {
@@ -271,7 +276,7 @@ export function LeftNavigation({
                 >previous</p>
                 <Button 
                 type="submit"
-                className="m-1 bg-purple-800 "
+                className={`m-1 ${!loading? "bg-purple-800":" bg-purple-300"}`} 
                 >Post</Button>
               </div>
               </>

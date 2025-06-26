@@ -6,9 +6,14 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
-        pathname: "/**", // matches all paths under this domain
+        pathname: "/**",
       },
     ],
+  },
+   experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
   },
 };
 

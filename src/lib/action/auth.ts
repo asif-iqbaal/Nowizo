@@ -9,6 +9,9 @@ import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { cookies } from "next/headers";
 import sendVerificationEmail from "@/lib/action/sendEmialVerification";
+import { json } from "stream/consumers";
+import { getUser } from "../auth";
+import { userFeed } from "./feed";
 
 export async function createUser(props:any){
     try {
@@ -123,17 +126,21 @@ export async function loginUser(props:any){
     }
 }
 
-// export async function LoggedUser(){
-//     try {
-//         const cookiesStore = cookies();
-//         const response = (await cookiesStore).get("_token")?.value;
+export async function LoggedUser(){
+    try {
+        const user = await getUser();
+        if(user){
+        await DBconnect();
+        const userDetails = await User.findById(user.userID).populate("userPosts");
+        const safeData = JSON.parse(JSON.stringify(userDetails));
+        return safeData;
+        }
+    } catch (error:any) 
+    {
+        throw(error);
+    }
+}
 
-
-//     } catch (error:any) 
-//     {
-//         throw(error);
-//     }
-// }
 export async function Logout(){
     try {
         const cookiesStore = cookies();

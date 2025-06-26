@@ -2,6 +2,7 @@
 
 import { User } from "@/models/users/userModel";
 import { DBconnect } from "@/dbConfig/dbConfige";
+import { getUser } from "../auth";
 
 export async function GetUsers(){
     try {
@@ -41,5 +42,77 @@ export async function SeachUserPosts(id:string){
         error:error.message,
         status:500
       }
+    }
+}
+
+export async function followUser(targetUserId: string) {
+  try {
+    const user = await getUser(); // Logged-in user
+    const currentUserId = user.userID;
+
+    if (currentUserId === targetUserId) {
+      throw new Error("You cannot follow yourself.");
+    }
+
+    const targetUser = await User.findById(targetUserId);
+    const currentUser = await User.findById(currentUserId);
+
+    if (!targetUser || !currentUser) {
+      throw new Error("User not found.");
+    }
+
+
+    if (targetUser.userFollowers.includes(currentUserId)) {
+      return {
+        message: "Already following",
+        status: 200,
+      };
+    }
+
+    targetUser.userFollowers.push(currentUserId);
+    targetUser.followers += 1;
+    await targetUser.save();
+
+    currentUser.userFollowing.push(targetUserId);
+    currentUser.following += 1;
+    await currentUser.save();
+
+    return {
+      message: "Followed successfully",
+      status: 201,
+    };
+  } catch (error: any) {
+    console.error("Follow error:", error);
+    throw error;
+  }
+}
+
+export async function UnFollowUser(targetUserId: string){
+    try {
+        const user = await getUser();
+        const currentUserId = user.userID;
+
+        if(currentUserId === targetUserId){
+            throw new Error("user can't unfollow themself");
+        }
+
+        const targetUser = await User.findById(targetUserId);
+        const currentUser = await User.findById(currentUserId);
+
+        currentUser.userFollowing = currentUser.userFollowing.filter((id:string) =>id.toString() !== targetUserId);
+        currentUser.following -= 1;
+        await currentUser.save();
+
+        targetUser.userFollowers = targetUser.userFollowers.filter((id:string) => id.toString() !== currentUserId)
+        targetUser.followers -= 1;
+        await targetUser.save();
+        
+        return{
+            message:"Unfollow Successfully",
+            status:201
+        }
+    } catch (error:any) {
+        console.log("unFollow error",error);
+        throw(error);
     }
 }

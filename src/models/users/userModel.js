@@ -59,6 +59,18 @@ const userSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref:'Post'
     }
+    ],
+    userFollowers:[
+        {
+            type:String,
+            default:null
+        }
+    ],
+    userFollowing:[
+        {
+            type:String,
+            default:null
+        }
     ]
 });
 
