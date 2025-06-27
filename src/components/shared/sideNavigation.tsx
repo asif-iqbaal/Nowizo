@@ -68,7 +68,7 @@ const items = [
   },
   {
     title: "Settings",
-    url: "/dashboard/settings",
+    url: "/dashboard/setting",
     icon: Settings,
   },
 ];
@@ -137,9 +137,13 @@ export function LeftNavigation({
       }
   }
   const handleLogout = async () => {
+   try {
     await Logout();
     router.push('/auth/login');
     toast("Logged out");
+   } catch (error:any) {
+    toast(error.message);
+   }
   }
 
   const handleMenu = () => {

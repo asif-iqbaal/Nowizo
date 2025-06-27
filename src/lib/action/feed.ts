@@ -9,10 +9,17 @@ export async function userFeed(){
     try {
         await DBconnect();
         const user = await getUser();
-        if(user){
-            const 
+        const currentUserId = user.userID;
+        if(!user){
+           throw new Error("User not logged in");
         }
-        
+        const userDetails = await User.findById(currentUserId);
+        const userFollowingIds = userDetails.userFollowing;
+
+        const posts = await Post.find({user: {$in: userFollowingIds}}).populate("user","username displayName").sort({createdAt : -1});
+
+        return  JSON.parse(JSON.stringify(posts));
+            
     } catch (error:any) {
         throw(error);
     }

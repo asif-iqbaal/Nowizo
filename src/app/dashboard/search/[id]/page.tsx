@@ -11,9 +11,6 @@ import { useParams } from 'next/navigation';
 import { GetUserById, SeachUserPosts, followUser, UnFollowUser } from "@/lib/action/searchUser"
 import { toast } from "sonner"
 
-interface UserProfileProps {
-  userId?: string
-}
 
 export default function UserProfile() {
 
@@ -24,15 +21,14 @@ export default function UserProfile() {
   const [usersPosts,setUsersPosts] = useState<any[]>([]);
   const [isFollowing, setIsFollowing] = useState<boolean>(false)
   const [activeTab, setActiveTab] = useState("posts");
+  const [refreshKey, setRefreshKey] = useState(0);
   
-
-
-
   const handleFollow = async () => {
      
       try {
          await followUser(id);
          toast("follwed")
+         setRefreshKey((prev) => prev + 1);
       } catch (error:any) {
         toast(error.message)
       }
@@ -42,6 +38,7 @@ export default function UserProfile() {
       try {
         await UnFollowUser(id);
         toast("unfollwed")
+        setRefreshKey((prev) => prev + 1);
       } catch (error:any) {
         toast(error.message)
       }
@@ -52,13 +49,17 @@ export default function UserProfile() {
     const rawUser = await SeachUserPosts(id);
     setUserData(rawUser);
     setUsersPosts(rawUser.userPosts);
-    if(rawUser.userFollowers.include((id))){
+    console.log(rawUser);
+    if(rawUser.isFollowed){
       setIsFollowing(true);
+    }else{
+      setIsFollowing(false);
     }
     
   };
   fetchUser();
-}, [id,handleFollow,handleunFollow]);
+}, [id,refreshKey]);
+
   return (
   <div className="w-full mx-auto bg-black text-white border overflow-hidden  p-2">
       {/* Header */}
@@ -114,14 +115,15 @@ export default function UserProfile() {
         <div className="flex w-full justify-end">
         <div className="flex space-x-2 mb-6 w-[50vw] ">
           {isFollowing? <Button
-            onClick={handleFollow}
+           
+              onClick={handleunFollow}
             className={`flex-1           
                  bg-gray-200 text-gray-800 hover:bg-gray-300
             }`}
           >
             Following
           </Button>:<Button
-            onClick={handleunFollow}
+             onClick={handleFollow}
             className={`flex-1 
                  bg-purple-600 hover:bg-purple-700 text-white
             }`}

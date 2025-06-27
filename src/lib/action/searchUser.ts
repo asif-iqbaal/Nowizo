@@ -3,6 +3,7 @@
 import { User } from "@/models/users/userModel";
 import { DBconnect } from "@/dbConfig/dbConfige";
 import { getUser } from "../auth";
+import {IUserWithPosts} from '@/context/index'
 
 export async function GetUsers(){
     try {
@@ -32,8 +33,20 @@ export async function GetUserById(id:string){
 
 export async function SeachUserPosts(id:string){
     try {
-      const response = await User.findById(id).populate("userPosts").lean();
+      const user = await getUser();
+      const currentUser = user.userID;
+      const response = await User.findById(id).populate("userPosts").lean<IUserWithPosts>();
     //   const plainUser = response.toObject();
+    if (!response) {
+      throw new Error("User not found");
+    }
+
+    if(Array.isArray(response.userFollowers) && response.userFollowers.includes(currentUser)){
+      response.isFollowed = true;
+    }else{
+      response.isFollowed = false;
+    }
+
       const safeData = JSON.parse(JSON.stringify(response));
       return safeData;
     } catch (error:any) {

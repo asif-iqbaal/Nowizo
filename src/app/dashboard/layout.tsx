@@ -20,11 +20,11 @@ export default function DashboardLayout({
         <LeftNavigation isCollapse={isCollapse} toggleCollapse={handleToggle}/>
         </div>
         <main
-          className="flex-grow transition-all duration-300"
+          className="flex-grow transition-all duration-400"
         >
           {children}
         </main>
-        <Toaster position='top-center' className='bg-gray-950 text-white'/>
+        <Toaster position='top-center' className='bg-gray-950 text-white text-center'/>
       </div>
     </SidebarProvider>
   )

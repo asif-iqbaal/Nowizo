@@ -1,9 +1,14 @@
+"use client"
+
+import React,{useEffect, useState} from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Verified } from "lucide-react"
+import { userFeed } from "@/lib/action/feed"
+import Spinner from "@/components/ui/loader"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -83,34 +88,62 @@ const posts = [
 ]
 
 export default function HomeFeed() {
+  const [posts,setPosts] =useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  useEffect( () => {
+    async function Feeds(){
+      setIsLoading(true);
+      const posts = await userFeed();
+      console.log(posts);
+      setPosts(posts);
+      setIsLoading(false);
+    }
+    Feeds();
+  },[]);
+
+  if(isLoading){
+    return(
+      <div className="w-full h-full">
+        <Spinner />
+      </div>
+    )
+  }
+  
+  if(!posts){
+    return(
+      <div className="w-full h-full flex justify-center items-center italic">
+        Follow people to see posts
+      </div>
+    )
+  }
   return (
     <div className="flex justify-center  bg-black text-white overflow-x-hidden w-full">
-    <div className=" mx-auto border rounded-lg overflow-hidden h-screen  bg-black text-white ml-2 p-2 overflow-x-hidden">
+    <div className=" w-[80%] border rounded-lg overflow-hidden h-screen  bg-black text-white ml-2 p-2 overflow-x-hidden">
       {/* Header */}
       
 
       {/* Feed */}
-      <ScrollArea className="h-[600px]">
+      <ScrollArea className="h-full">
         <div className="divide-y">
           {posts.map((post) => (
-            <Card key={post.id} className="border-0 rounded-none shadow-none  bg-black text-white">
+            <Card key={post._id} className="border-0 rounded-none shadow-none  bg-black text-white">
               {/* Post Header */}
               <CardHeader className="p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={post.user.avatar || "/placeholder.svg"} alt={post.user.username} />
-                      <AvatarFallback>{post.user.username.slice(0, 2).toUpperCase()}</AvatarFallback>
+                      <AvatarImage src={post?.user?.avatar || "/placeholder.svg"} alt={post?.user?.username} />
+                      <AvatarFallback>{post?.user?.username.slice(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <div className="flex items-center space-x-1">
                       <Link href="#" className="font-semibold text-sm hover:underline">
-                        {post.user.username}
+                        {post?.user?.username}
                       </Link>
-                      {post.user.verified && <Verified className="h-4 w-4 text-blue-500 fill-current" />}
+                      {/* {post.user.verified && <Verified className="h-4 w-4 text-blue-500 fill-current" />} */}
                     </div>
-                    <Badge variant="secondary" className="text-xs">
+                    {/* <Badge variant="secondary" className="text-xs">
                       {post.timeAgo}
-                    </Badge>
+                    </Badge> */}
                   </div>
                   <Button variant="ghost" size="icon" className="h-8 w-8">
                     <MoreHorizontal className="h-4 w-4" />
@@ -121,7 +154,7 @@ export default function HomeFeed() {
               {/* Post Image */}
               <CardContent className="p-0">
                 <Image
-                  src={post.image || "/placeholder.svg"}
+                  src={post?.image || "/placeholder.svg"}
                   alt="Post content"
                   width={400}
                   height={400}
@@ -152,27 +185,27 @@ export default function HomeFeed() {
 
                   {/* Likes */}
                   <div className="px-3 pb-2">
-                    <p className="font-semibold text-sm">{post.likes.toLocaleString()} likes</p>
+                    <p className="font-semibold text-sm">{post?.likes?.toLocaleString()} likes</p>
                   </div>
 
                   {/* Caption */}
                   <div className="px-3 pb-2">
                     <p className="text-sm">
                       <Link href="#" className="font-semibold hover:underline">
-                        {post.user.username}
+                        {post?.user?.username}
                       </Link>{" "}
-                      {post.caption}
+                      {post?.caption}
                     </p>
                   </div>
 
                   {/* Comments */}
                   <div className="px-3 pb-3 space-y-1">
-                    {post.comments.length > 2 && (
+                    {post?.comments?.length > 2 && (
                       <Button variant="ghost" className="h-auto p-0 text-gray-500 text-sm">
                         View all {post.comments.length + 5} comments
                       </Button>
                     )}
-                    {post.comments.slice(0, 2).map((comment, index) => (
+                    {post?.comments?.slice(0, 2).map((comment, index) => (
                       <p key={index} className="text-sm">
                         <Link href="#" className="font-semibold hover:underline">
                           {comment.username}

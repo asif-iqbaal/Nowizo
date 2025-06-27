@@ -1,4 +1,5 @@
 import mongoose, { Schema, models } from 'mongoose';
+import { boolean } from 'zod';
 
 const userSchema = new Schema({
     username:{
@@ -71,7 +72,11 @@ const userSchema = new Schema({
             type:String,
             default:null
         }
-    ]
+    ],
+    isFollowed:{
+        type: Boolean,
+        default:false,
+    }
 });
 
 
