@@ -65,10 +65,18 @@ export function LoginForm({
     try {
       setLogin(true);
       let user = await loginUser(data);
-      toast("Logged In Successfully")
-      if(user)
+      if(user.message === "Incorrect password"){
+        toast(user.message)
+        setLogin(false);
+        
+      }else if(user.message === "invalid email"){
+        toast(user.message)
+        setLogin(false);
+      }else{
       router.push('/dashboard/home');
-  
+       toast("Logged In Successfully")
+       setLogin(false);
+      };
     } catch (error:any) {
       toast(error.message);
       setLogin(false);

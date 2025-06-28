@@ -5,11 +5,12 @@ import { Post } from "@/models/post/postModel";
 import { DBconnect } from "@/dbConfig/dbConfige";
 import { getUser } from "../auth";
 
+
 export async function userFeed(){
     try {
         await DBconnect();
         const user = await getUser();
-        const currentUserId = user.userID;
+        const currentUserId = user?.userID;
         if(!user){
            throw new Error("User not logged in");
         }

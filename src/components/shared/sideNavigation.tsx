@@ -151,7 +151,7 @@ export function LeftNavigation({
   }
   return (
     <>
-
+    <SidebarProvider>
       <Sidebar className={`bg-black transition-transform  flex-row justify-between ${isCollapse?"w-20":"w-64"}`}>
         <SidebarHeader className={`p-4 bg-black flex transition-transform  flex-row justify-between `}>
           <div className="flex bg-black">
@@ -191,19 +191,20 @@ export function LeftNavigation({
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter className="bg-black">
+        <SidebarFooter className="bg-black text-center w-full">
          
           {!isCollapse ? <Button variant={"destructive"} className="cursor-pointer" onClick={handleLogout} >
             Logout
           </Button> : <Button
                     variant="destructive"
                     size='icon'
-                    className="cursor-pointer"
+                    className="ml-1 mb-2 p-6 flex  justify-center hover:bg-gray-800 cursor-pointer gap-2 text-white"
                     onClick={handleLogout}>  
                     <LogOut />
                     </Button>}
         </SidebarFooter>
       </Sidebar>
+    </SidebarProvider>
 
       {/* Dialog */}
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>

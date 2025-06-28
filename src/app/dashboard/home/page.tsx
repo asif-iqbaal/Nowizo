@@ -118,12 +118,12 @@ export default function HomeFeed() {
   }
   return (
     <div className="flex justify-center  bg-black text-white overflow-x-hidden w-full">
-    <div className=" w-[80%] border rounded-lg overflow-hidden h-screen  bg-black text-white ml-2 p-2 overflow-x-hidden">
+    <div className=" w-[100%] border rounded-lg overflow-hidden h-screen  bg-black text-white ml-2 p-2 overflow-x-hidden">
       {/* Header */}
       
 
       {/* Feed */}
-      <ScrollArea className="h-full">
+      <ScrollArea className="h-full ">
         <div className="divide-y">
           {posts.map((post) => (
             <Card key={post._id} className="border-0 rounded-none shadow-none  bg-black text-white">
@@ -222,7 +222,7 @@ export default function HomeFeed() {
       </ScrollArea>
     </div>
     <div>
-          <Card className="w-100 ml-3  mr-3 bg-black text-white">
+          <Card className="w-100 ml-3  mr-3 bg-black text-white hidden ">
              <CardHeader>
             <CardTitle>Card Title</CardTitle>
             <CardDescription>Card Description</CardDescription>

@@ -20,7 +20,7 @@ export default function DashboardLayout({
         <LeftNavigation isCollapse={isCollapse} toggleCollapse={handleToggle}/>
         </div>
         <main
-          className="flex-grow transition-all duration-400"
+          className="flex-grow transition-all duration-400 w-full"
         >
           {children}
         </main>
