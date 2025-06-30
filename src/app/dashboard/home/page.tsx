@@ -12,81 +12,6 @@ import Spinner from "@/components/ui/loader"
 import Image from "next/image"
 import Link from "next/link"
 
-const posts = [
-  {
-    id: 1,
-    user: {
-      username: "techstartup_co",
-      displayName: "TechStartup Co.",
-      avatar: "/placeholder.svg?height=40&width=40",
-      verified: true,
-    },
-    image: "/placeholder.svg?height=400&width=400",
-    likes: 1247,
-    caption:
-      "🚀 Just launched our new AI-powered analytics dashboard! The future of data visualization is here. What do you think?",
-    comments: [
-      { username: "sarah_dev", text: "This looks incredible! Can't wait to try it out 🔥" },
-      { username: "mike_founder", text: "Amazing work team! The UI is so clean 👏" },
-    ],
-    timeAgo: "2h",
-  },
-  {
-    id: 2,
-    user: {
-      username: "designstudio_hq",
-      displayName: "Design Studio HQ",
-      avatar: "/placeholder.svg?height=40&width=40",
-      verified: false,
-    },
-    image: "/placeholder.svg?height=300&width=400",
-    likes: 892,
-    caption:
-      "Behind the scenes of our latest SaaS redesign project. Clean interfaces that convert 💼✨ #SaaSDesign #UXDesign",
-    comments: [
-      { username: "alex_ux", text: "Love the minimalist approach! 🎨" },
-      { username: "jenny_pm", text: "The color palette is perfect 💯" },
-    ],
-    timeAgo: "4h",
-  },
-  {
-    id: 3,
-    user: {
-      username: "growth_hacker_pro",
-      displayName: "Growth Hacker Pro",
-      avatar: "/placeholder.svg?height=40&width=40",
-      verified: true,
-    },
-    image: "/placeholder.svg?height=350&width=400",
-    likes: 2156,
-    caption: "📈 Our SaaS grew 300% this quarter! Here's the growth strategy that made it happen. Swipe for insights ➡️",
-    comments: [
-      { username: "startup_sam", text: "Incredible growth! What was your main channel?" },
-      { username: "marketing_mary", text: "Need to learn from you! 🙌" },
-      { username: "founder_frank", text: "Inspiring stuff! 💪" },
-    ],
-    timeAgo: "6h",
-  },
-  {
-    id: 4,
-    user: {
-      username: "saas_insights",
-      displayName: "SaaS Insights",
-      avatar: "/placeholder.svg?height=40&width=40",
-      verified: false,
-    },
-    image: "/placeholder.svg?height=320&width=400",
-    likes: 743,
-    caption:
-      "💡 5 SaaS metrics every founder should track daily. Save this post for later! Which metric do you prioritize?",
-    comments: [
-      { username: "data_dan", text: "MRR and churn rate are my top 2! 📊" },
-      { username: "ceo_claire", text: "Customer acquisition cost is crucial too 💰" },
-    ],
-    timeAgo: "8h",
-  },
-]
-
 export default function HomeFeed() {
   const [posts,setPosts] =useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -94,8 +19,9 @@ export default function HomeFeed() {
     async function Feeds(){
       setIsLoading(true);
       const posts = await userFeed();
-      console.log(posts);
+      if(posts){
       setPosts(posts);
+      }
       setIsLoading(false);
     }
     Feeds();
@@ -109,16 +35,16 @@ export default function HomeFeed() {
     )
   }
   
-  if(!posts){
+  if(posts.length === 0){
     return(
-      <div className="w-full h-full flex justify-center items-center italic">
+      <div className="w-full h-full flex justify-center items-center italic text-white">
         Follow people to see posts
       </div>
     )
   }
   return (
-    <div className="flex justify-center  bg-black text-white overflow-x-hidden w-full">
-    <div className=" w-[100%] border rounded-lg overflow-hidden h-screen  bg-black text-white ml-2 p-2 overflow-x-hidden">
+    <div className="w-full mx-auto bg-black text-white border overflow-hidden  p-2">
+    <div className=" w-[100%] border rounded-lg overflow-hidden h-screen  bg-black text-white p-2 overflow-x-hidden">
       {/* Header */}
       
 

@@ -30,7 +30,9 @@ export default function RootLayout({
         {/* <SidebarProvider> */}
           <div className="flex w-screen bg-black">
             <main className="w-screen">{children}</main>
-            <Toaster position="top-center" className='bg-gray-950 text-white text-center'/>
+            <Toaster position="top-center"  toastOptions={{
+            className: 'bg-gray-950 text-white text-center',
+          }}/>
           </div>
         {/* </SidebarProvider> */}
       </body>

@@ -1,24 +1,38 @@
 "use client"
 
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { LeftNavigation } from '@/components/shared/sideNavigation'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/sonner'
+import MobileNavigation from '@/components/shared/mobileNavigation'
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const [isCollapse,setIsCollapse] = useState<boolean>(false);
+  const [displayWidth,SetDisplayWidth] = useState(0);
+
+  useEffect(()=>{
+    const width = window.innerWidth
+    SetDisplayWidth(width);
+  },[])
+  
+
   const handleToggle = () => {
     setIsCollapse((prev) => (!prev));
   }
   return (
     <SidebarProvider>
       <div className="flex bg-black w-screen h-screen transition-all overflow-hidden overflow-y-scroll">
-        <div className={`transition-all duration-200  ${isCollapse?"w-20":"w-64"}`}>
-        <LeftNavigation isCollapse={isCollapse} toggleCollapse={handleToggle}/>
+      {displayWidth < 690 ? (
+       <MobileNavigation />
+      ) : (
+        <div className={`transition-all duration-200 ${isCollapse ? "w-20" : "w-64"}`}>
+          <LeftNavigation isCollapse={isCollapse} toggleCollapse={handleToggle} />
         </div>
+      )}
         <main
           className="flex-grow transition-all duration-400 w-full"
         >
