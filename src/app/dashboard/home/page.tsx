@@ -5,8 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Badge } from "@/components/ui/badge"
-import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Verified } from "lucide-react"
+import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal} from "lucide-react"
 import { userFeed } from "@/lib/action/feed"
 import Spinner from "@/components/ui/loader"
 import Image from "next/image"
@@ -131,7 +130,7 @@ export default function HomeFeed() {
                         View all {post.comments.length + 5} comments
                       </Button>
                     )}
-                    {post?.comments?.slice(0, 2).map((comment, index) => (
+                    {post?.comments?.slice(0, 2).map((comment: { username: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; text: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined }, index: React.Key | null | undefined) => (
                       <p key={index} className="text-sm">
                         <Link href="#" className="font-semibold hover:underline">
                           {comment.username}

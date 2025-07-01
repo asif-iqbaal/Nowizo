@@ -3,7 +3,7 @@
 import { User } from "@/models/users/userModel";
 import { DBconnect } from "@/dbConfig/dbConfige";
 import { getUser } from "../auth";
-import {IUserWithPosts} from '@/context/index'
+import {IUserWithPosts, IToken} from '@/context/index'
 
 export async function GetUsers(){
     try {
@@ -33,7 +33,7 @@ export async function GetUserById(id:string){
 
 export async function SeachUserPosts(id:string){
     try {
-      const user = await getUser();
+      const user:IToken | any = await getUser();
       const currentUser = user.userID;
       const response = await User.findById(id).populate("userPosts").lean<IUserWithPosts>();
     //   const plainUser = response.toObject();
@@ -60,7 +60,7 @@ export async function SeachUserPosts(id:string){
 
 export async function followUser(targetUserId: string) {
   try {
-    const user = await getUser(); // Logged-in user
+    const user:IToken | any = await getUser(); // Logged-in user
     const currentUserId = user.userID;
 
     if (currentUserId === targetUserId) {
@@ -102,7 +102,7 @@ export async function followUser(targetUserId: string) {
 
 export async function UnFollowUser(targetUserId: string){
     try {
-        const user = await getUser();
+        const user: IToken | any = await getUser();
         const currentUserId = user.userID;
 
         if(currentUserId === targetUserId){

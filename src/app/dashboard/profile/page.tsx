@@ -1,4 +1,5 @@
 "use client"
+
 import React,{useEffect,useState} from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -12,7 +13,6 @@ export default function Profile(){
     const [userData,setUserData] = useState<any>(null)
     const [userPosts,setUserPosts] = useState<any[]>([]);
     const [activeTab, setActiveTab] = useState("posts");
-    const [isFollowing,setIsFollowing] = useState<boolean>(false);
     const [loading,setLoading] = useState<boolean>(false);
     useEffect(()=>{
         async function user (){

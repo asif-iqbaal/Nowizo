@@ -12,9 +12,18 @@ export const LoginSchema =z.object({
     password:z.string().min(8,{message:"min 8 character"})
 })
 
+// export const CreatePostSchema = z.object({
+//   file: z
+//     .instanceof(File, { message: "Image is required" })
+//     .refine((file) => file.size > 0, { message: "File cannot be empty" }),
+//   caption: z.string().min(1, "Caption is required"),
+// });
+
 export const CreatePostSchema = z.object({
   file: z
-    .instanceof(File, { message: "Image is required" })
-    .refine((file) => file.size > 0, { message: "File cannot be empty" }),
-  caption: z.string().min(1, "Caption is required"),
+    .instanceof(File)
+    .refine((file) => file.size > 0, { message: "File cannot be empty" })
+    .optional(),
+  caption: z.string(),
 });
+

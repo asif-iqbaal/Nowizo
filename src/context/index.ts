@@ -11,3 +11,16 @@ export interface IUserWithPosts {
   isFollowed?: boolean;
   // other fields you need
 }
+
+export interface IToken {
+  username:string;
+  userID:string,
+  displayName:string;
+  emial:string;
+}
+
+export interface ICreatePost {
+  user:string;
+  image:string;
+  caption:string;
+}

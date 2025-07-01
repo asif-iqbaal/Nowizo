@@ -40,6 +40,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PostContent } from "@/lib/action/createPost";
 import { Logout } from "@/lib/action/auth";
 import {toast} from "sonner";
+import { ICreatePost } from "@/context";
 
 const items = [
   {
@@ -93,7 +94,7 @@ export function LeftNavigation({
   const form = useForm<PostFormValue>({
     resolver: zodResolver(CreatePostSchema),
    defaultValues: {
-   file: null,
+   file: undefined,
    caption: '',
 }
 
@@ -121,7 +122,8 @@ export function LeftNavigation({
   const  handleSubmit = async (data:PostFormValue) =>{
       try {
         setLoading(true);
-        let post  = await PostContent(data);
+        let post  = await PostContent({caption: data.caption,
+      file: data.file});
 
         if(post){
           toast(post.message);
@@ -137,6 +139,7 @@ export function LeftNavigation({
         setLoading(false);
       }
   }
+  
   const handleLogout = async () => {
    try {
     await Logout();
@@ -214,7 +217,7 @@ export function LeftNavigation({
             <DialogTitle>Create Post</DialogTitle>
             <DialogDescription>
             <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)}>
+            <form onSubmit={form.handleSubmit(() => handleSubmit)}>
              { step == 1 &&
              <>
             <FormField

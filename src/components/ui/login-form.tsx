@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import Loading from "./loading";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,12 +16,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { FcGoogle } from "react-icons/fc";
 import { Facebook } from "lucide-react";
 import { LoginSchema } from "@/validation";
-import { CreateUser } from "@/context";
-import { createUser, loginUser } from "@/lib/action/auth";
+import { loginUser } from "@/lib/action/auth";
 import { getUser } from "@/lib/auth";
 import {toast} from "sonner";
 import Spinner from "./loader";

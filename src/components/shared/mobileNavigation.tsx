@@ -93,7 +93,7 @@ export default function MobileNavigation(){
   const form = useForm<PostFormValue>({
     resolver: zodResolver(CreatePostSchema),
    defaultValues: {
-   file: null,
+   file: undefined,
    caption: '',
 }
 
@@ -137,6 +137,7 @@ export default function MobileNavigation(){
         setLoading(false);
       }
   }
+  
   const handleLogout = async () => {
    try {
     await Logout();
@@ -177,7 +178,7 @@ export default function MobileNavigation(){
                     <DialogTitle>Create Post</DialogTitle>
                     <DialogDescription>
                     <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)}>
+                    <form onSubmit={form.handleSubmit(() => handleSubmit)}>
                      { step == 1 &&
                      <>
                     <FormField

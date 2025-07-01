@@ -4,13 +4,11 @@ import React,{ useEffect, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowLeft, Verified, Grid3X3, Bookmark, Tag, MoreHorizontal, MapPin, LinkIcon, Calendar,Heart,MessageCircle } from "lucide-react"
-import Image from "next/image"
+import { ArrowLeft, Grid3X3, Bookmark, Tag, MoreHorizontal, Heart,MessageCircle } from "lucide-react"
 import Link from "next/link"
 import { useParams } from 'next/navigation'; 
-import { GetUserById, SeachUserPosts, followUser, UnFollowUser } from "@/lib/action/searchUser"
+import { SeachUserPosts, followUser, UnFollowUser } from "@/lib/action/searchUser"
 import { toast } from "sonner"
-
 
 export default function UserProfile() {
 
