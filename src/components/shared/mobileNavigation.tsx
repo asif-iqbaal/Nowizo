@@ -147,7 +147,7 @@ export default function MobileNavigation(){
   }
     return(
         <>
-        <div className="flex justify-between w-full bottom-0 fixed bg-black">
+        <div className="flex justify-between w-full bottom-0 fixed bg-black z-10">
             {items.map((item) => (
             <div className="text-white"
             key={item.title}

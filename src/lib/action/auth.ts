@@ -17,7 +17,8 @@ export async function createUser(props:any){
         const user = await User.findOne({email});
         if(user){
             return{ 
-            message:'User already exist'
+            message:'User already exist',
+            status:400,
                 }
             
         }

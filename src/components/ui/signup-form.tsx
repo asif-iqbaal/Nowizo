@@ -44,7 +44,10 @@ export function SignForm({
     try {
       setLoading(true)
       let user = await createUser(data)
-      if(user){
+      if(user.message === "User already exist"){
+        toast(user.message);
+        setLoading(false);
+      }else{
         toast("Signed Up Successfully \n Please Verify yourself from email")
         setLoading(false);
       }

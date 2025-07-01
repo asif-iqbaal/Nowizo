@@ -68,7 +68,11 @@ export function LoginForm({
       }else if(user.message === "invalid email"){
         toast(user.message)
         setLogin(false);
-      }else{
+      }else if(user.message === "please verify youself from email verification"){
+        toast(user.message)
+        setLogin(false);
+      }
+      else{
       router.push('/dashboard/home');
        toast("Logged In Successfully")
        setLogin(false);
