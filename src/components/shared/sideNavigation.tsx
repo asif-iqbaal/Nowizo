@@ -119,7 +119,7 @@ export function LeftNavigation({
   const  handleSubmit = async (data:PostFormValue) =>{
       try {
         setLoading(true);
-        let post  = await PostContent({caption: data.caption,
+        const post  = await PostContent({caption: data.caption,
       file: data.file});
 
         if(post){

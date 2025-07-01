@@ -155,7 +155,7 @@ export default function UserProfile() {
         <TabsContent value="posts" className="mt-0"> 
           <div className="grid grid-cols-3 gap-1">
             {usersPosts?.map((post) => (
-              <div className="flex flex-col cursor-pointer">
+              <div className="flex flex-col cursor-pointer" key={post._id}>
                 <img src={post.image} alt="images" className="h-[60%]" />
                 <div className="text-sm font-thin font-serif p-1 ">{post.caption}</div>
                 <div className="flex ">

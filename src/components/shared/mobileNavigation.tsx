@@ -119,7 +119,7 @@ export default function MobileNavigation(){
   const  handleSubmit = async (data:PostFormValue) =>{
       try {
         setLoading(true);
-        let post  = await PostContent(data);
+        const post  = await PostContent(data);
 
         if(post){
           toast(post.message);

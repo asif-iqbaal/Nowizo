@@ -18,7 +18,7 @@ export async function verifyEmail(token: string) {
     await user.save();
 
     return { success: true, message: "Email verified successfully" };
-  } catch (error) {
-    return { success: false, message: "Invalid or expired token" };
+  } catch (error:any) {
+    return { success: false, error : error , message: "Invalid or expired token" };
   }
 }

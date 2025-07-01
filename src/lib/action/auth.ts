@@ -47,14 +47,14 @@ export async function createUser(props:any){
                 .catch((err) => console.error("❌ Error sending email:", err));
      
 
-        (await cookies()).set({
-                    name: '_token',
-                    value: token,
-                    httpOnly: true,
-                    path: '/',
-                    secure: process.env.NODE_ENV === 'production',
-                    maxAge: 60 * 60 * 2 // 2 hours in seconds
-                    })
+        // (await cookies()).set({
+        //             name: '_token',
+        //             value: token,
+        //             httpOnly: true,
+        //             path: '/',
+        //             secure: process.env.NODE_ENV === 'production',
+        //             maxAge: 60 * 60 * 2 // 2 hours in seconds
+        //             })
 
         return{ 
             token,
@@ -86,6 +86,14 @@ export async function loginUser(props:any){
         if(!isMatched){
             return {
                 message:'Incorrect password',
+                status:400
+            }
+        }
+
+        const isVerified = await user.isVerified;
+        if(!isVerified){
+            return {
+                message:"please verify youself from email verification",
                 status:400
             }
         }

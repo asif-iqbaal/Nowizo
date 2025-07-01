@@ -5,22 +5,22 @@ export interface CreateUser{
 }
 
 export interface IUserWithPosts {
-  _id: string;
+  _id: String;
   userPosts: any[]; // or define properly
-  userFollowers: string[];
+  userFollowers: String[];
   isFollowed?: boolean;
   // other fields you need
 }
 
 export interface IToken {
-  username:string;
-  userID:string,
-  displayName:string;
-  emial:string;
+  username:String;
+  userID:String,
+  displayName:String;
+  emial:String;
 }
 
 export interface ICreatePost {
-  user:string;
-  image:string;
-  caption:string;
+  user:String;
+  image:String;
+  caption:String;
 }

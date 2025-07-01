@@ -32,7 +32,6 @@ export function LoginForm({
 }: React.ComponentProps<"form">) {
   const router = useRouter();
   const [loading,setLoading] = useState<boolean>(false);
-  const [bottonLoading,setButtonLoading] = useState<boolean>(false);
    const [login,setLogin] = useState<boolean>(false);
 
  useEffect(() => {
@@ -80,6 +79,13 @@ export function LoginForm({
     }
   };
 
+  if(loading){
+    return(
+      <>
+      <div className="w-screen h-screen"><Spinner /></div>
+      </>
+    )
+  }
   return (
     <div className={cn("w-full max-w-md space-y-6 text-white", className)}>
       <div className="text-center space-y-1">

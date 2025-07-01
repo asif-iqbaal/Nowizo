@@ -20,6 +20,7 @@ import { Facebook } from "lucide-react";
 import { SignupSchema } from "@/validation";
 import { createUser } from "@/lib/action/auth";
 import { toast } from "sonner";
+import Spinner from "./loader";
 
 type SignFormValues = z.infer<typeof SignupSchema>;
 
@@ -48,11 +49,19 @@ export function SignForm({
         setLoading(false);
       }
     } catch (error:any) {
-      console.error("Signup error:", error);
+      toast(error);
     } finally{
       setLoading(false);
     }
   };
+
+   if(loading){
+      return(
+        <>
+        <div className="w-screen h-screen"><Spinner /></div>
+        </>
+      )
+    }
 
   return (
     <div className={cn("w-full max-w-md space-y-6 text-white", className)} >
