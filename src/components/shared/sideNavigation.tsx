@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import {
-  Calendar,
   Home,
   Inbox,
   LogOut,
@@ -10,7 +9,6 @@ import {
   Settings,
   PlusIcon,
   User,
-  Icon,
   Menu,
   X,
 } from "lucide-react";
@@ -40,7 +38,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PostContent } from "@/lib/action/createPost";
 import { Logout } from "@/lib/action/auth";
 import {toast} from "sonner";
-import { ICreatePost } from "@/context";
 
 const items = [
   {

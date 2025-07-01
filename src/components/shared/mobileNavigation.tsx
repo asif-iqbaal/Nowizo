@@ -1,12 +1,11 @@
 "use client"
 
-import React,{useState,useEffect} from "react"
+import React,{useState} from "react"
 import {
  Home,
  Inbox,
  PlusIcon,
  Search,
- Settings,
  User } from "lucide-react";
 import 
 { 
@@ -44,7 +43,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreatePostSchema } from "@/validation";
 import { z } from "zod";
-import { DESTRUCTION } from "dns";
 
 const items = [
   {
