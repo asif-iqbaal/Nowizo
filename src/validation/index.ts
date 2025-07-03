@@ -27,3 +27,18 @@ export const CreatePostSchema = z.object({
   caption: z.string(),
 });
 
+export const ProfileUpdate = z.object({
+ file: z
+  .any()
+  .refine(
+    (val) =>
+      val === undefined || (val instanceof File && val.size > 0),
+    { message: "Invalid or empty file" }
+  )
+  .optional(),
+
+  username: z.string().min(3,{message:"username should more than 3 letter"}).optional(),
+  displayName:z.string().min(2,{message:"enter your display name"}).optional(),
+  bio:z.string().min(1,{message:"minimum 1 character"}).optional(),
+  });
+

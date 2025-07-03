@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import sendVerificationEmail from "@/lib/action/sendEmialVerification";
 import { getUser } from "../auth";
 import { IToken } from '@/context';
+import cloudinary from '@/cloaudinary/cloudinary';
 
 export async function createUser(props:any){
     try {
@@ -142,6 +143,77 @@ export async function LoggedUser(){
         }
     } catch (error:any) 
     {
+        throw(error);
+    }
+}
+
+export async function LoggedUserDetails(){
+    try {
+        const user: IToken | any = await getUser();
+        if(user){
+            await DBconnect();
+            const userDetails = await User.findById(user.userID);
+            const safeData = JSON.parse(JSON.stringify(userDetails));
+            return safeData;
+        }
+    } catch (error:any) {
+        throw(error);
+    }
+}
+
+export async function UpdateProfile(props:{file?:File, username?:string, displayName?:string, bio?:string}){
+    try {
+        const userpresent: IToken | any = await getUser();
+        if(userpresent){
+            await DBconnect();
+            const user = await User.findById(userpresent.usrID);
+            const {file,username,displayName,bio} = props;
+
+             let imageURL = '';
+            
+                if (file) {
+                  const arrayBuffer = await file.arrayBuffer();
+                  const buffer = Buffer.from(arrayBuffer);
+            
+                  const result: any = await new Promise((resolve, reject) => {
+                    const uploadStream = cloudinary.uploader.upload_stream(
+                      { folder: 'nowizo' },
+                      (err, result) => {
+                        if (err) return reject(err);
+                        resolve(result);
+                      }
+                    );
+            
+                    uploadStream.end(buffer);
+                  });
+            
+                  imageURL = result.secure_url;
+                } 
+
+            if(file){
+                user.avatar =  imageURL
+            }
+            if(username){
+                user.username = username
+            }
+            if(displayName){
+                user.displayName= displayName
+            }
+            if(bio){
+                user.bio = bio
+            }
+            // const updateUser = await User.findByIdAndUpdate(user.userID,{
+            //     file: user.avatar,
+            //     username: user.username,
+            //     displayName:user.displayName,
+            //     bio:user.bio
+            // })
+            return {
+                message:"profile updated",
+                status:401
+            }
+        }
+    } catch (error:any) {
         throw(error);
     }
 }

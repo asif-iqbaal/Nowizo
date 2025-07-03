@@ -21,8 +21,8 @@ export async function GetUserById(id:string){
     try {
        await  DBconnect();
         const response = await User.findOne({_id:id});
-        const plainUser = response.toObject(); // ✅ convert to plain object
-        return plainUser; // ✅ return the correct thing
+        const plainUser = response.toObject();
+        return plainUser; 
     } catch (error:any) {
         return{
             error,
