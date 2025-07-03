@@ -166,7 +166,7 @@ export async function UpdateProfile(props:{file?:File, username?:string, display
         const userpresent: IToken | any = await getUser();
         if(userpresent){
             await DBconnect();
-            const user = await User.findById(userpresent.usrID);
+            const user = await User.findById(userpresent.userID);
             const {file,username,displayName,bio} = props;
 
              let imageURL = '';
@@ -208,6 +208,7 @@ export async function UpdateProfile(props:{file?:File, username?:string, display
             //     displayName:user.displayName,
             //     bio:user.bio
             // })
+            await user.save();
             return {
                 message:"profile updated",
                 status:401
@@ -218,6 +219,23 @@ export async function UpdateProfile(props:{file?:File, username?:string, display
     }
 }
 
+export async function ChangePassword(password:string){
+    try {
+        const currentUser: IToken | any = await getUser();
+        const salt = await bcryptjs.genSalt(10);
+        const hashedPassword = await bcryptjs.hash(password,salt);
+        await  User.findByIdAndUpdate(currentUser.userID,{
+            password : hashedPassword,
+        })
+
+        return{
+            message:"password updated successfully",
+            status:401
+        }
+    } catch (error:any) {
+        throw(error);
+    }
+}
 export async function Logout(){
     try {
         const cookiesStore = cookies();

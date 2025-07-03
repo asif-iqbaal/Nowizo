@@ -37,7 +37,7 @@ import
 import z from "zod";
 import { ProfileUpdate } from "@/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoggedUserDetails, UpdateProfile } from "@/lib/action/auth";
+import { ChangePassword, LoggedUserDetails, UpdateProfile } from "@/lib/action/auth";
 import { User } from "lucide-react";
 import { toast } from "sonner";
 import Spinner from "@/components/ui/loader";
@@ -49,25 +49,41 @@ export default function Setting(){
     const [user,setUser] = useState<any>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [previewImage,setPreviewImage] = useState("");
-    const form = useForm<updateProfileValue>({
-    resolver: zodResolver(ProfileUpdate),
-    defaultValues: {
-        file:undefined,
-        username: "",
-        displayName: "",
-        bio:""
+    const [openConfirm,setOpenConfirm] = useState<boolean>(false);
+    const [password,setPassword] = useState("");
+const form = useForm<updateProfileValue>({
+  resolver: zodResolver(ProfileUpdate),
+  defaultValues: {
+    username: '',
+    displayName: '',
+    bio: '',
+    file: undefined,
+  }
+});
+
+    const handlePasswordChange = async (password:string) => {
+        try {
+            if(password.length>0){
+            const updatePassword = await ChangePassword(password)
+            if(updatePassword){
+                toast.message(updatePassword.message);
+                setOpenConfirm(false);
+                setPassword("");
+            }
+        }else{
+            toast.error("Type new password")
+        }
+        } catch (error:any) {
+            toast.error(error)
+        }
     }
-    });
+
 
     const handleUpdateProfile = async (data:updateProfileValue) => {
         try {
             setLoading(true);
-            const updateProfile = await UpdateProfile({
-                username:data.username,
-                file:data.file,
-                displayName:data.displayName,
-                bio:data.bio
-            });
+            console.log(data);
+            const updateProfile = await UpdateProfile(data);
             console.log(updateProfile);
             if(updateProfile){
                 toast("Profile Updated");
@@ -81,15 +97,22 @@ export default function Setting(){
         }
     }
 
-    useEffect(()=>{
-        async function GETPROFILE(){
-           const userDetails = await LoggedUserDetails();
-            if(userDetails){
-                setUser(userDetails);
-            }
-        }
-        GETPROFILE();
-    },[])
+ useEffect(() => {
+  async function GETPROFILE() {
+    const userDetails = await LoggedUserDetails();
+    if (userDetails) {
+      setUser(userDetails);
+    //   form.reset({
+    //     username: userDetails.username ?? "",
+    //     displayName: userDetails.displayName ?? "",
+    //     bio: userDetails.bio ?? "",
+    //     file: undefined,
+    //   });
+    }
+  }
+  GETPROFILE();
+}, []);
+
 
     return(
         <>
@@ -98,23 +121,52 @@ export default function Setting(){
             <div className="w-full h-full flex flex-col items-center">
             <div className="w-[95%] flex flex-col items-center gap-4 ">
             <Dialog>
-            <DialogTrigger asChild className="w-full"><Button className="w-full p-8 cursor-pointer flex justify-start text-xl">Change Password</Button></DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                <DialogTitle>Change Password</DialogTitle>
-                <DialogDescription>
-                    You cannot direct change password if you doesn't remember the previous one.
-                    <Label className="p-2 text-lg">New Password</Label>
-                    <Input
-                    className="p-1"
-                    placeholder="enter new password"
-                     />
-                     <Button  className="mt-2 p-1 w-full">Save Change</Button>
-                </DialogDescription>
-                </DialogHeader>
-            </DialogContent>
-            </Dialog>
+        <DialogTrigger asChild>
+          <Button className="w-full p-8 cursor-pointer flex justify-start text-xl">
+            Change Password
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Change Password</DialogTitle>
+            <DialogDescription className="flex flex-col space-y-2">
+              You cannot directly change password if you don't remember the previous one.
+              <Label className="p-2 text-lg">New Password</Label>
+              <Input className="p-1" placeholder="enter new password" onChange={(e) => setPassword(e.target.value)} />
+              <Button
+                className="mt-2 p-1 w-full"
+                onClick={() => setOpenConfirm(true)}
+              >
+                Save Change
+              </Button>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
 
+      {/* Confirmation Dialog */}
+      <Dialog open={openConfirm} onOpenChange={setOpenConfirm}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Change</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to change your password?
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-2 mt-4">
+            <Button variant="secondary" onClick={() => setOpenConfirm(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                handlePasswordChange(password)
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
             <Sheet>
             <SheetTrigger asChild className="w-full"><Button className="w-full p-8 cursor-pointer flex justify-start text-xl">Edit Profile</Button></SheetTrigger>
             <SheetContent className="h-screen">
@@ -126,7 +178,7 @@ export default function Setting(){
                 </SheetHeader>
                 <div>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleUpdateProfile)}>
+                    <form onSubmit={form.handleSubmit(handleUpdateProfile)} >
                         <FormField 
                        control={form.control}
                        name="file"
@@ -177,7 +229,11 @@ export default function Setting(){
                             <FormItem className="p-2 m-2">
                                 <FormLabel>Username</FormLabel>
                                 <FormControl>
-                                    <Input placeholder={user.username} {...field}/>
+                                    <Input placeholder="enter username"  
+                                    onChange={(e) => {
+                                        const username = e.target.value;
+                                        form.setValue("username",username);
+                                    }}/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -191,7 +247,11 @@ export default function Setting(){
                             <FormItem className="p-2 m-2">
                                 <FormLabel>Display Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder={user.displayName} {...field}/>
+                                     <Input placeholder="enter display name"  
+                                    onChange={(e) => {
+                                        const displayName = e.target.value;
+                                        form.setValue("displayName",displayName);
+                                    }}/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -205,7 +265,11 @@ export default function Setting(){
                             <FormItem className="p-2 m-2">
                                 <FormLabel>Bio</FormLabel>
                                 <FormControl>
-                                    <Input placeholder={user.bio} {...field}/>
+                                    <Input placeholder="enter username"  
+                                    onChange={(e) => {
+                                        const bio = e.target.value;
+                                        form.setValue("bio",bio);
+                                    }}/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
