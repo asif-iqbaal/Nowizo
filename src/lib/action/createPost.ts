@@ -7,11 +7,12 @@ import { redirect } from 'next/navigation';
 import { DBconnect } from '@/dbConfig/dbConfige';
 import cloudinary from '@/cloaudinary/cloudinary'; // ✅ default import now
 import { IToken } from '@/context';
+import { UploadApiResponse } from 'cloudinary';
 
-export async function PostContent( props: { file?: File; caption: string; }) {
+export async function PostContent( props: { file?: File; caption: String; }) {
   try {
     await DBconnect();
-    const user:IToken | any = await getUser();
+    const user:IToken = await getUser();
     if (!user) {
       redirect('/auth/login');
     }
@@ -23,17 +24,18 @@ export async function PostContent( props: { file?: File; caption: string; }) {
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      const result: any = await new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-          { folder: 'nowizo' },
-          (err, result) => {
+     const result: UploadApiResponse = await new Promise((resolve, reject) => {
+           const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: 'nowizo' },
+            (err, result) => {
             if (err) return reject(err);
+            if (!result) return reject(new Error("Upload result is undefined"));
             resolve(result);
-          }
-        );
-
-        uploadStream.end(buffer);
-      });
+            }
+           );
+     
+       uploadStream.end(buffer);
+ });
 
       imageURL = result.secure_url;
     } 
@@ -58,11 +60,10 @@ export async function PostContent( props: { file?: File; caption: string; }) {
       status: 200,
       post: newPost,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ PostContent error:', error);
     return {
       message: 'Something went wrong',
-      error: error.message,
       status: 500,
     };
   }

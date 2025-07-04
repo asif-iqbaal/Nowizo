@@ -7,10 +7,11 @@ import jwt from 'jsonwebtoken';
 import { cookies } from "next/headers";
 import sendVerificationEmail from "@/lib/action/sendEmialVerification";
 import { getUser } from "../auth";
-import { IToken } from '@/context';
+import { IToken, ICreateUser,ILogin } from '@/context';
 import cloudinary from '@/cloaudinary/cloudinary';
+import { UploadApiResponse } from 'cloudinary';
 
-export async function createUser(props:any){
+export async function createUser(props:ICreateUser){
     try {
         await DBconnect();
         // const reqBody = await request.json();
@@ -48,21 +49,11 @@ export async function createUser(props:any){
                 .then(() => console.log("✅ Email sent!"))
                 .catch((err) => console.error("❌ Error sending email:", err));
      
-
-        // (await cookies()).set({
-        //             name: '_token',
-        //             value: token,
-        //             httpOnly: true,
-        //             path: '/',
-        //             secure: process.env.NODE_ENV === 'production',
-        //             maxAge: 60 * 60 * 2 // 2 hours in seconds
-        //             })
-
         return{ 
             token,
             message:"check your email for verification"
         }
-    } catch (error:any) {
+    } catch (error:unknown) {
         console.log("error signup",error);
         return {
             message:'Oops something went wrong'
@@ -70,7 +61,7 @@ export async function createUser(props:any){
     }
 }
 
-export async function loginUser(props:any){
+export async function loginUser(props:ILogin){
     try {
          await DBconnect();
         //const reqBody = await request.json();
@@ -124,7 +115,7 @@ export async function loginUser(props:any){
             token,
             status:200
         }
-    } catch (error:any) {
+    } catch (error:unknown) {
         return {
             messagae:error,
             status:500
@@ -134,14 +125,14 @@ export async function loginUser(props:any){
 
 export async function LoggedUser(){
     try {
-        const user: IToken | any = await getUser();
+        const user:IToken  = await getUser();
         if(user){
         await DBconnect();
         const userDetails = await User.findById(user.userID).populate("userPosts");
         const safeData = JSON.parse(JSON.stringify(userDetails));
         return safeData;
         }
-    } catch (error:any) 
+    } catch (error:unknown) 
     {
         throw(error);
     }
@@ -149,21 +140,21 @@ export async function LoggedUser(){
 
 export async function LoggedUserDetails(){
     try {
-        const user: IToken | any = await getUser();
+        const user: IToken  = await getUser();
         if(user){
             await DBconnect();
             const userDetails = await User.findById(user.userID);
             const safeData = JSON.parse(JSON.stringify(userDetails));
             return safeData;
         }
-    } catch (error:any) {
+    } catch (error:unknown) {
         throw(error);
     }
 }
 
 export async function UpdateProfile(props:{file?:File, username?:string, displayName?:string, bio?:string}){
     try {
-        const userpresent: IToken | any = await getUser();
+        const userpresent: IToken  = await getUser();
         if(userpresent){
             await DBconnect();
             const user = await User.findById(userpresent.userID);
@@ -175,17 +166,18 @@ export async function UpdateProfile(props:{file?:File, username?:string, display
                   const arrayBuffer = await file.arrayBuffer();
                   const buffer = Buffer.from(arrayBuffer);
             
-                  const result: any = await new Promise((resolve, reject) => {
-                    const uploadStream = cloudinary.uploader.upload_stream(
-                      { folder: 'nowizo' },
-                      (err, result) => {
+                  const result: UploadApiResponse = await new Promise((resolve, reject) => {
+                  const uploadStream = cloudinary.uploader.upload_stream(
+                        { folder: 'nowizo' },
+                        (err, result) => {
                         if (err) return reject(err);
+                        if (!result) return reject(new Error("Upload result is undefined"));
                         resolve(result);
-                      }
+                        }
                     );
-            
+
                     uploadStream.end(buffer);
-                  });
+                    });
             
                   imageURL = result.secure_url;
                 } 
@@ -214,14 +206,14 @@ export async function UpdateProfile(props:{file?:File, username?:string, display
                 status:401
             }
         }
-    } catch (error:any) {
+    } catch (error:unknown) {
         throw(error);
     }
 }
 
 export async function ChangePassword(password:string){
     try {
-        const currentUser: IToken | any = await getUser();
+        const currentUser: IToken = await getUser();
         const salt = await bcryptjs.genSalt(10);
         const hashedPassword = await bcryptjs.hash(password,salt);
         await  User.findByIdAndUpdate(currentUser.userID,{
@@ -232,7 +224,7 @@ export async function ChangePassword(password:string){
             message:"password updated successfully",
             status:401
         }
-    } catch (error:any) {
+    } catch (error:unknown) {
         throw(error);
     }
 }
@@ -243,7 +235,7 @@ export async function Logout(){
         path:'/',
         maxAge:0
        });
-    } catch (error:any) {
+    } catch (error:unknown) {
         throw(error);
     }
 }

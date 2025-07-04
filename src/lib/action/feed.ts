@@ -9,7 +9,7 @@ import { IToken } from "@/context";
 export async function userFeed(){
     try {
         await DBconnect();
-        const user: IToken | any = await getUser();
+        const user: IToken  = await getUser();
         const currentUserId = user?.userID;
         if(!user){
            throw new Error("User not logged in");
@@ -21,7 +21,7 @@ export async function userFeed(){
 
         return  JSON.parse(JSON.stringify(posts));
             
-    } catch (error:any) {
+    } catch (error:unknown) {
         throw(error);
     }
 }

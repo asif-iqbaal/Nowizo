@@ -9,7 +9,7 @@ export async function GetUsers(){
     try {
         const users = await User.find();
         return users;
-    } catch (error:any) {
+    } catch (error:unknown) {
         return {
             error,
             message:'server error to find user'
@@ -23,7 +23,7 @@ export async function GetUserById(id:string){
         const response = await User.findOne({_id:id});
         const plainUser = response.toObject();
         return plainUser; 
-    } catch (error:any) {
+    } catch (error:unknown) {
         return{
             error,
             message:"server error to get user details"
@@ -33,26 +33,28 @@ export async function GetUserById(id:string){
 
 export async function SeachUserPosts(id:string){
     try {
-      const user:IToken | any = await getUser();
-      const currentUser = user.userID;
+      const user:IToken  = await getUser();
+      const currentUser : String | null = user.userID;
       const response = await User.findById(id).populate("userPosts").lean<IUserWithPosts>();
     //   const plainUser = response.toObject();
     if (!response) {
       throw new Error("User not found");
     }
 
-    if(Array.isArray(response.userFollowers) && response.userFollowers.includes(currentUser)){
+   if (!currentUser) {
+      response.isFollowed = false;
+    } else if (Array.isArray(response.userFollowers) && response.userFollowers.includes(currentUser)) {
       response.isFollowed = true;
-    }else{
+    } else {
       response.isFollowed = false;
     }
 
+
       const safeData = JSON.parse(JSON.stringify(response));
       return safeData;
-    } catch (error:any) {
+    } catch (error:unknown) {
       return{
         message:"server error",
-        error:error.message,
         status:500
       }
     }
@@ -60,7 +62,7 @@ export async function SeachUserPosts(id:string){
 
 export async function followUser(targetUserId: string) {
   try {
-    const user:IToken | any = await getUser(); // Logged-in user
+    const user:IToken  = await getUser(); // Logged-in user
     const currentUserId = user.userID;
 
     if (currentUserId === targetUserId) {
@@ -94,7 +96,7 @@ export async function followUser(targetUserId: string) {
       message: "Followed successfully",
       status: 201,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Follow error:", error);
     throw error;
   }
@@ -102,7 +104,7 @@ export async function followUser(targetUserId: string) {
 
 export async function UnFollowUser(targetUserId: string){
     try {
-        const user: IToken | any = await getUser();
+        const user: IToken  = await getUser();
         const currentUserId = user.userID;
 
         if(currentUserId === targetUserId){
@@ -124,7 +126,7 @@ export async function UnFollowUser(targetUserId: string){
             message:"Unfollow Successfully",
             status:201
         }
-    } catch (error:any) {
+    } catch (error:unknown) {
         console.log("unFollow error",error);
         throw(error);
     }

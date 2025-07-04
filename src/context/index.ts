@@ -1,26 +1,39 @@
 export interface CreateUser{
-    username:String,
-    email:String,
-    password:String
+    username:string,
+    email:string,
+    password:string
 }
 
 export interface IUserWithPosts {
-  _id: String;
+  _id: string;
   userPosts: any[]; // or define properly
-  userFollowers: String[];
+  userFollowers: string[];
   isFollowed?: boolean;
   // other fields you need
 }
 
 export interface IToken {
-  username:String;
-  userID:String,
-  displayName:String;
-  emial:String;
+  username: string | null;
+  userID: string | null;
+  displayName: string | null;
+  email: string | null;
 }
 
+
 export interface ICreatePost {
-  user:String;
-  image:String;
-  caption:String;
+  user:string;
+  image:string;
+  caption:string;
+}
+
+export interface ICreateUser {
+  username:string;
+  email:string;
+  password:string;
+  displayName:string;
+}
+
+export interface ILogin {
+  email:string;
+  password:string;
 }

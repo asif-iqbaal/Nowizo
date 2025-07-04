@@ -35,7 +35,7 @@ export default async function sendVerificationEmail(email: string, link: string)
 `
 ,
   })
- } catch (error:any) {
+ } catch (error:unknown) {
     console.log(error);
  }
 }
