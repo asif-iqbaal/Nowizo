@@ -10,9 +10,10 @@ import { userFeed } from "@/lib/action/feed"
 import Spinner from "@/components/ui/loader"
 import Image from "next/image"
 import Link from "next/link"
+import { IUserPosts } from "@/context"
 
 export default function HomeFeed() {
-  const [posts,setPosts] =useState<any[]>([]);
+  const [posts,setPosts] =useState<IUserPosts[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect( () => {
     async function Feeds(){
@@ -34,7 +35,7 @@ export default function HomeFeed() {
     )
   }
   
-  if(posts.length === 0){
+  if(posts?.length === 0){
     return(
       <div className="w-full h-full flex justify-center items-center italic text-white">
         Follow people to see posts
@@ -50,7 +51,7 @@ export default function HomeFeed() {
       {/* Feed */}
       <ScrollArea className="h-full ">
         <div className="divide-y">
-          {posts.map((post) => (
+          {posts?.map((post) => (
             <Card key={post._id} className="border-0 rounded-none shadow-none  bg-black text-white">
               {/* Post Header */}
               <CardHeader className="p-3">
@@ -130,14 +131,14 @@ export default function HomeFeed() {
                         View all {post.comments.length + 5} comments
                       </Button>
                     )}
-                    {post?.comments?.slice(0, 2).map((comment: { username: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; text: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined }, index: React.Key | null | undefined) => (
+                    {/* {post?.comments?.slice(0, 2).map((comment) => (
                       <p key={index} className="text-sm">
                         <Link href="#" className="font-semibold hover:underline">
                           {comment.username}
                         </Link>{" "}
                         {comment.text}
                       </p>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
               </CardFooter>

@@ -129,8 +129,12 @@ export function LeftNavigation({
           setOpenDialog(false);
         }
         
-      } catch (error:any) {
-        toast(error.message);
+      } catch (error) {
+         if (error instanceof Error) {
+                  toast(error.message);
+                } else {
+                  toast("An unexpected error occurred");
+                }
         setLoading(false);
       }finally{
         setLoading(false);
@@ -142,8 +146,12 @@ export function LeftNavigation({
     await Logout();
     router.push('/auth/login');
     toast("Logged out");
-   } catch (error:any) {
-    toast(error.message);
+   } catch (error) {
+    if (error instanceof Error) {
+             toast(error.message);
+           } else {
+             toast("An unexpected error occurred");
+           }
    }
   }
 
@@ -220,7 +228,7 @@ export function LeftNavigation({
             <FormField
               control={form.control}
               name="file"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Choose Image</FormLabel>
                   <FormControl>

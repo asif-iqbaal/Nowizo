@@ -43,7 +43,7 @@ export function SignForm({
   const onSubmit = async (data: SignFormValues) => {
     try {
       setLoading(true)
-      let user = await createUser(data)
+      const user = await createUser(data)
       if(user.message === "User already exist"){
         toast(user.message);
         setLoading(false);
@@ -51,8 +51,12 @@ export function SignForm({
         toast("Signed Up Successfully \n Please Verify yourself from email")
         setLoading(false);
       }
-    } catch (error:any) {
-      toast(error);
+    } catch (error) {
+       if (error instanceof Error) {
+                toast(error.message);
+              } else {
+                toast("An unexpected error occurred");
+              }
     } finally{
       setLoading(false);
     }

@@ -128,8 +128,12 @@ export default function MobileNavigation(){
           setOpenDialog(false);
         }
         
-      } catch (error:any) {
-        toast(error.message);
+      } catch (error) {
+         if (error instanceof Error) {
+                  toast(error.message);
+                } else {
+                  toast("An unexpected error occurred");
+                }
         setLoading(false);
       }finally{
         setLoading(false);
@@ -141,8 +145,12 @@ export default function MobileNavigation(){
     await Logout();
     router.push('/auth/login');
     toast("Logged out");
-   } catch (error:any) {
-    toast(error.message);
+   } catch (error) {
+     if (error instanceof Error) {
+              toast(error.message);
+            } else {
+              toast("An unexpected error occurred");
+            }
    }
   }
     return(
@@ -182,7 +190,7 @@ export default function MobileNavigation(){
                     <FormField
                       control={form.control}
                       name="file"
-                      render={({ field }) => (
+                      render={() => (
                         <FormItem>
                           <FormLabel>Choose Image</FormLabel>
                           <FormControl>

@@ -41,12 +41,13 @@ import { ChangePassword, LoggedUserDetails, UpdateProfile } from "@/lib/action/a
 import { User } from "lucide-react";
 import { toast } from "sonner";
 import Spinner from "@/components/ui/loader";
+import { IUserData } from "@/context";
 
 
 type updateProfileValue = z.infer<typeof ProfileUpdate>
 
 export default function Setting(){
-    const [user,setUser] = useState<any>([]);
+    const [user,setUser] = useState<IUserData | null>();
     const [loading, setLoading] = useState<boolean>(false);
     const [previewImage,setPreviewImage] = useState("");
     const [openConfirm,setOpenConfirm] = useState<boolean>(false);
@@ -73,8 +74,12 @@ const form = useForm<updateProfileValue>({
         }else{
             toast.error("Type new password")
         }
-        } catch (error:any) {
-            toast.error(error)
+        } catch (error) {
+            if (error instanceof Error) {
+                     toast(error.message);
+                   } else {
+                     toast("An unexpected error occurred");
+                   }
         }
     }
 
@@ -89,8 +94,12 @@ const form = useForm<updateProfileValue>({
                 toast("Profile Updated");
                 setLoading(false);
             }
-        } catch (error:any) {
-            toast(error);
+        } catch (error) {
+             if (error instanceof Error) {
+                      toast(error.message);
+                    } else {
+                      toast("An unexpected error occurred");
+                    }
             setLoading(false);
         } finally{
             setLoading(false);
@@ -182,7 +191,7 @@ const form = useForm<updateProfileValue>({
                         <FormField 
                        control={form.control}
                        name="file"
-                       render={({field})=>(
+                       render={()=>(
                        <FormItem className="p-2 m-2 flex items-center flex-col">
                             <FormLabel className="hover:underline">Profile Picture</FormLabel>
                             <div
@@ -190,7 +199,7 @@ const form = useForm<updateProfileValue>({
                             >
                                 {user?.avatar || previewImage ? (
                                 <img
-                                    src={user.avatar || previewImage}
+                                    src={user?.avatar || previewImage}
                                     alt="user-profile"
                                     className="h-[200px] w-[200px] rounded-full object-cover"
                                 />
@@ -225,7 +234,7 @@ const form = useForm<updateProfileValue>({
                         <FormField 
                         control={form.control}
                         name="username"
-                        render={(field)=>(
+                        render={()=>(
                             <FormItem className="p-2 m-2">
                                 <FormLabel>Username</FormLabel>
                                 <FormControl>
@@ -243,7 +252,7 @@ const form = useForm<updateProfileValue>({
                           <FormField 
                         control={form.control}
                         name="displayName"
-                        render={(field)=>(
+                        render={()=>(
                             <FormItem className="p-2 m-2">
                                 <FormLabel>Display Name</FormLabel>
                                 <FormControl>
@@ -261,7 +270,7 @@ const form = useForm<updateProfileValue>({
                         <FormField 
                         control={form.control}
                         name="bio"
-                        render={(field)=>(
+                        render={()=>(
                             <FormItem className="p-2 m-2">
                                 <FormLabel>Bio</FormLabel>
                                 <FormControl>

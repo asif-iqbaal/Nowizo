@@ -41,7 +41,7 @@ export function LoginForm({
     if (user) {
       router.push("/dashboard/home");
     } else {
-      setLoading(false); // only turn off loading if not redirecting
+      setLoading(false); 
     }
   }
 
@@ -60,7 +60,7 @@ export function LoginForm({
   const onSubmit = async (data: SignFormValues) => {
     try {
       setLogin(true);
-      let user = await loginUser(data);
+      const user = await loginUser(data);
       if(user.message === "Incorrect password"){
         toast(user.message)
         setLogin(false);
@@ -77,8 +77,12 @@ export function LoginForm({
        toast("Logged In Successfully")
        setLogin(false);
       };
-    } catch (error:any) {
-      toast(error.message);
+    } catch (error) {
+          if (error instanceof Error) {
+        toast(error.message);
+      } else {
+        toast("An unexpected error occurred");
+      }
       setLogin(false);
     }
   };

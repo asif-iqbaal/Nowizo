@@ -2,15 +2,15 @@
 
 import { useState, useMemo,useEffect } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Search } from "lucide-react"
 import Link from "next/link"
 import { GetUsers } from "@/lib/action/searchUser"
+import { IUserData } from "@/context"
 
 export default function UserSearch() {
-  const [users,setUsers] = useState<any[]>([]);
+  const [users,setUsers] = useState<IUserData[]>([]);
   useEffect(()=>{
     const AllUsers = async () => {
       const response = await GetUsers();
@@ -25,9 +25,9 @@ export default function UserSearch() {
     AllUsers();
   },[])
   const [searchQuery, setSearchQuery] = useState("")
-  const [followingStates, setFollowingStates] = useState<Record<number, boolean>>(
-     users.reduce((acc, user) => ({ ...acc, [user.id]: user.isFollowing }), {}),
-  )
+  // const [followingStates, setFollowingStates] = useState<Record<number, boolean>>(
+  //    users.reduce((acc, user) => ({ ...acc, [user.id]: user.isFollowing }), {}),
+  // )
 
   // Filter users based on search query
   const filteredUsers = useMemo(() => {
@@ -41,12 +41,12 @@ export default function UserSearch() {
     )
   }, [searchQuery])
 
-  const handleFollowToggle = (userId: number) => {
-    setFollowingStates((prev) => ({
-      ...prev,
-      [userId]: !prev[userId],
-    }))
-  }
+  // const handleFollowToggle = (userId: number) => {
+  //   setFollowingStates((prev) => ({
+  //     ...prev,
+  //     [userId]: !prev[userId],
+  //   }))
+  // }
 
   return (
     <div className="w-[80vw]  mx-auto bg-black text-white border rounded-lg overflow-hidden">
@@ -125,7 +125,7 @@ export default function UserSearch() {
                     </div>
 
                     <div className="flex-shrink-0 ml-3">
-                      <Button
+                      {/* <Button
                         size="sm"
                         variant={followingStates[user._id] ? "outline" : "default"}
                         onClick={() => handleFollowToggle(user._id)}
@@ -136,7 +136,7 @@ export default function UserSearch() {
                         }
                       >
                         {followingStates[user._id] ? "Following" : "Follow"}
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </CardContent>

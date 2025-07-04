@@ -8,10 +8,11 @@ import { ArrowLeft, Bookmark, Grid3X3, Heart, MessageCircle, MoreHorizontal, Tag
 import { LoggedUser } from "@/lib/action/auth"
 import Link from "next/link";
 import Spinner from "@/components/ui/loader"
+import { IUserData, IUserPosts } from "@/context"
 
 export default function Profile(){
-    const [userData,setUserData] = useState<any>(null)
-    const [userPosts,setUserPosts] = useState<any[]>([]);
+    const [userData,setUserData] = useState<IUserData>();
+    const [userPosts,setUserPosts] = useState<IUserPosts>();
     const [activeTab, setActiveTab] = useState("posts");
     const [loading,setLoading] = useState<boolean>(false);
     useEffect(()=>{
@@ -107,7 +108,7 @@ export default function Profile(){
 
         <TabsContent value="posts" className="mt-0"> 
           <div className="grid grid-cols-3 gap-1">
-            {userPosts?.map((post) => (
+            {userData?.userPosts?.map((post) => (
               <div className="flex flex-col cursor-pointer" key={post._id}>
                 <img src={post.image} alt="images" className="h-[60%]" />
                 <div className="text-sm font-thin font-serif p-1 ">{post.caption}</div>
@@ -118,7 +119,7 @@ export default function Profile(){
                   </div>
                   <div className="p-1">
                     <MessageCircle />
-                   <p>{post.commnets}</p> 
+                   <p>{post.comments}</p> 
                   </div>
                 </div>
               </div>

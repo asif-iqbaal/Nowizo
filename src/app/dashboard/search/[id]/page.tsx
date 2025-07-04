@@ -9,17 +9,18 @@ import Link from "next/link"
 import { useParams } from 'next/navigation'; 
 import { SeachUserPosts, followUser, UnFollowUser } from "@/lib/action/searchUser"
 import { toast } from "sonner"
+import { IUserData, IUserPosts } from "@/context"
 
 export default function UserProfile() {
 
   const params = useParams();
   const id = params.id as string;
 
-  const [userData,setUserData] = useState<any>(null);
-  const [usersPosts,setUsersPosts] = useState<any[]>([]);
+  const [userData,setUserData] = useState<IUserData>();
+  const [usersPosts,setUsersPosts] = useState<IUserPosts[]>([]);
   const [isFollowing, setIsFollowing] = useState<boolean>(false)
   const [activeTab, setActiveTab] = useState("posts");
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [refreshKey, setRefreshKey] = useState<number>(0);
   
   const handleFollow = async () => {
      
@@ -27,8 +28,12 @@ export default function UserProfile() {
          await followUser(id);
          toast("follwed")
          setRefreshKey((prev) => prev + 1);
-      } catch (error:any) {
-        toast(error.message)
+      } catch (error) {
+         if (error instanceof Error) {
+          toast(error.message);
+        } else {
+          toast("An unexpected error occurred");
+        }
       }
   }
 
@@ -37,8 +42,12 @@ export default function UserProfile() {
         await UnFollowUser(id);
         toast("unfollwed")
         setRefreshKey((prev) => prev + 1);
-      } catch (error:any) {
-        toast(error.message)
+      } catch (error) {
+        if (error instanceof Error) {
+          toast(error.message);
+        } else {
+          toast("An unexpected error occurred");
+        }
       }
   }
 
@@ -165,7 +174,7 @@ export default function UserProfile() {
                   </div>
                   <div className="p-1">
                     <MessageCircle />
-                   <p>{post.commnets}</p> 
+                   <p>{post.comments}</p> 
                   </div>
                 </div>
               </div>
