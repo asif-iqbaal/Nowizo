@@ -42,6 +42,7 @@ import { User } from "lucide-react";
 import { toast } from "sonner";
 import Spinner from "@/components/ui/loader";
 import { IUserData } from "@/context";
+import Image from "next/image";
 
 
 type updateProfileValue = z.infer<typeof ProfileUpdate>
@@ -139,7 +140,7 @@ const form = useForm<updateProfileValue>({
           <DialogHeader>
             <DialogTitle>Change Password</DialogTitle>
             <DialogDescription className="flex flex-col space-y-2">
-              You cannot directly change password if you don't remember the previous one.
+              You cannot directly change password if you don&apos;t remember the previous one.
               <Label className="p-2 text-lg">New Password</Label>
               <Input className="p-1" placeholder="enter new password" onChange={(e) => setPassword(e.target.value)} />
               <Button
@@ -178,7 +179,7 @@ const form = useForm<updateProfileValue>({
       </Dialog>
             <Sheet>
             <SheetTrigger asChild className="w-full"><Button className="w-full p-8 cursor-pointer flex justify-start text-xl">Edit Profile</Button></SheetTrigger>
-            <SheetContent className="h-screen">
+            <SheetContent className="h-full">
                 <SheetHeader>
                 <SheetTitle>Edit Profile</SheetTitle>
                 <SheetDescription>
@@ -198,13 +199,13 @@ const form = useForm<updateProfileValue>({
                                 className="cursor-pointer"
                             >
                                 {user?.avatar || previewImage ? (
-                                <img
+                                <Image
                                     src={user?.avatar || previewImage}
                                     alt="user-profile"
-                                    className="h-[200px] w-[200px] rounded-full object-cover"
+                                    className="h-[100px] w-[100px] rounded-full object-cover"
                                 />
                                 ) : (
-                                <div className="h-[200px] w-[200px] rounded-full bg-gray-300 flex items-center justify-center">
+                                <div className="h-[100px] w-[100px] rounded-full bg-gray-300 flex items-center justify-center">
                                     <User className="h-16 w-16 text-gray-600" />
                                 </div>
                                 )}

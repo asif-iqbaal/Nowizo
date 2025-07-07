@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
   Home,
   Inbox,
@@ -161,7 +162,7 @@ export function LeftNavigation({
   return (
     <>
     <SidebarProvider>
-      <Sidebar className={`bg-black transition-transform  flex-row justify-between ${isCollapse?"w-20":"w-64"}`}>
+      <Sidebar className={`bg-black transition-transform border-none  flex-row justify-between ${isCollapse?"w-20":"w-64"}`}>
         <SidebarHeader className={`p-4 bg-black flex transition-transform  flex-row justify-between `}>
           <div className="flex bg-black">
          {!isCollapse  &&  <i className="text-2xl font-bold text-white">Nowizo</i>}
@@ -182,7 +183,7 @@ export function LeftNavigation({
              !isCollapse?( <Button
                 key={item.title}
                 onClick={() => handleItemClick(item.title, item.url)}
-                className="ml-1 mb-2 p-8 flex justify-start text-lg hover:bg-gray-800 cursor-pointer gap-2 text-white"
+                className="ml-1 mb-2 p-6 flex justify-start text-lg bg-transparent hover:bg-gray-800 cursor-pointer gap-2 text-white"
               >
                 <item.icon size={20} />
                 {item.title} 
@@ -262,7 +263,7 @@ export function LeftNavigation({
               <div>
                {preview && (
                   <div className="mb-4">
-                    <img
+                    <Image
                       src={preview}
                       alt="Preview"
                       className="w-full h-64 object-cover rounded-lg"

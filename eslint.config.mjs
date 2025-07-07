@@ -11,6 +11,13 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  {
+    // 👇 Your custom rule override here
+    rules: {
+      '@typescript-eslint/no-wrapper-object-types': 'off',
+    },
+  },
 ];
 
 export default eslintConfig;

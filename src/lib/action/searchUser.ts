@@ -33,8 +33,8 @@ export async function GetUserById(id:string){
 
 export async function SeachUserPosts(id:string){
     try {
-      const user:IToken  = await getUser();
-      const currentUser : String | null = user.userID;
+      const user:IToken | null  = await getUser();
+      const currentUser  = user?.userID;
       const response = await User.findById(id).populate("userPosts").lean<IUserWithPosts>();
     //   const plainUser = response.toObject();
     if (!response) {
@@ -52,18 +52,16 @@ export async function SeachUserPosts(id:string){
 
       const safeData = JSON.parse(JSON.stringify(response));
       return safeData;
-    } catch (error:unknown) {
-      return{
-        message:"server error",
-        status:500
+    } catch (error:unknown) {    
+        throw(error)
       }
     }
-}
+
 
 export async function followUser(targetUserId: string) {
   try {
-    const user:IToken  = await getUser(); // Logged-in user
-    const currentUserId = user.userID;
+    const user:IToken | null  = await getUser(); // Logged-in user
+    const currentUserId = user?.userID;
 
     if (currentUserId === targetUserId) {
       throw new Error("You cannot follow yourself.");
@@ -104,8 +102,8 @@ export async function followUser(targetUserId: string) {
 
 export async function UnFollowUser(targetUserId: string){
     try {
-        const user: IToken  = await getUser();
-        const currentUserId = user.userID;
+        const user: IToken | null  = await getUser();
+        const currentUserId = user?.userID;
 
         if(currentUserId === targetUserId){
             throw new Error("user can't unfollow themself");

@@ -8,6 +8,7 @@ import { getUser } from "@/lib/auth";
 
 //import Loading from "@/components/ui/loading";
 import {Loader2} from 'lucide-react'
+import Image from "next/image";
 export default function LoginPage() {
    const [loading,setLoading] = useState<boolean>(false);
   
@@ -24,7 +25,7 @@ export default function LoginPage() {
     }
   
     checkUser();
-  }, []);
+  }, [router]);
 
     if(loading){
       return(
@@ -53,7 +54,7 @@ export default function LoginPage() {
         </div>
       </div>
       <div className="bg-muted relative hidden lg:block">
-        <img
+        <Image
           src="/nowizo.png"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"

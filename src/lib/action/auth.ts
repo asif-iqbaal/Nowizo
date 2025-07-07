@@ -125,7 +125,7 @@ export async function loginUser(props:ILogin){
 
 export async function LoggedUser(){
     try {
-        const user:IToken  = await getUser();
+        const user:IToken | null  = await getUser();
         if(user){
         await DBconnect();
         const userDetails = await User.findById(user.userID).populate("userPosts");
@@ -140,7 +140,7 @@ export async function LoggedUser(){
 
 export async function LoggedUserDetails(){
     try {
-        const user: IToken  = await getUser();
+        const user: IToken | null = await getUser();
         if(user){
             await DBconnect();
             const userDetails = await User.findById(user.userID);
@@ -154,7 +154,7 @@ export async function LoggedUserDetails(){
 
 export async function UpdateProfile(props:{file?:File, username?:string, displayName?:string, bio?:string}){
     try {
-        const userpresent: IToken  = await getUser();
+        const userpresent: IToken | null  = await getUser();
         if(userpresent){
             await DBconnect();
             const user = await User.findById(userpresent.userID);
@@ -213,10 +213,10 @@ export async function UpdateProfile(props:{file?:File, username?:string, display
 
 export async function ChangePassword(password:string){
     try {
-        const currentUser: IToken = await getUser();
+        const currentUser: IToken | null = await getUser();
         const salt = await bcryptjs.genSalt(10);
         const hashedPassword = await bcryptjs.hash(password,salt);
-        await  User.findByIdAndUpdate(currentUser.userID,{
+        await  User.findByIdAndUpdate(currentUser?.userID,{
             password : hashedPassword,
         })
 

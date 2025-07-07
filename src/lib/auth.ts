@@ -5,17 +5,12 @@ import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import { IToken } from '@/context';
 
-export async function getUser(): Promise<IToken> {
+export async function getUser(): Promise<IToken | null> {
   const cookieStore = cookies();
   const token = (await cookieStore).get('_token')?.value;
 
   if (!token) {
-    return {
-      username: null,
-      userID: null,
-      displayName: null,
-      email: null,
-    };
+    return null;
   }
 
   try {

@@ -13,7 +13,7 @@ import Link from "next/link"
 import { IUserPosts } from "@/context"
 
 export default function HomeFeed() {
-  const [posts,setPosts] =useState<IUserPosts[]>([]);
+  const [posts,setPosts] =useState<IUserPosts[] | null>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect( () => {
     async function Feeds(){
@@ -43,14 +43,14 @@ export default function HomeFeed() {
     )
   }
   return (
-    <div className="w-full mx-auto bg-black text-white border overflow-hidden  p-2">
-    <div className=" w-[100%] border rounded-lg overflow-hidden h-screen  bg-black text-white p-2 overflow-x-hidden">
+    <div className="w-full mx-auto bg-black text-white border overflow-hidden  p-2 border-none">
+    <div className=" w-[100%] border-none rounded-lg overflow-hidden h-screen  bg-black text-white p-2 overflow-x-hidden">
       {/* Header */}
-      
+      <p className="text-2xl font-bold md:pl-10">Home</p>
 
       {/* Feed */}
-      <ScrollArea className="h-full ">
-        <div className="divide-y">
+      <ScrollArea className="h-full border-none">
+        <div className="divide-y md:px-10 border-none">
           {posts?.map((post) => (
             <Card key={post._id} className="border-0 rounded-none shadow-none  bg-black text-white">
               {/* Post Header */}
@@ -84,7 +84,7 @@ export default function HomeFeed() {
                   alt="Post content"
                   width={400}
                   height={400}
-                  className="w-full object-cover"
+                  className="w-full object-cover rounded-xl"
                 />
               </CardContent>
 

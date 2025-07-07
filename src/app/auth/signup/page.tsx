@@ -1,5 +1,6 @@
 import { GalleryVerticalEnd } from "lucide-react"
 import { SignForm } from "@/components/ui/signup-form"
+import Image from "next/image"
 export default function SignPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -19,7 +20,7 @@ export default function SignPage() {
         </div>
       </div>
       <div className="bg-muted relative hidden lg:block">
-        <img
+        <Image
           src="/nowizo.png"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"

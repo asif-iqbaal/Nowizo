@@ -1,7 +1,13 @@
-import { verifyEmail } from "@/lib/action/emailVerify"
+import { verifyEmail } from "@/lib/action/emailVerify";
 
-export default async function VerifyEmailPage({ searchParams }: { searchParams: { token?: string |undefined } }) {
-  const token:string|undefined =  searchParams.token;
+type PageProps = {
+  searchParams: {
+    token?: string;
+  };
+};
+
+export default async function VerifyEmailPage({ searchParams }: PageProps) {
+  const token =  searchParams.token;
   let message = "Invalid request"
   if (token) {
     const res = await verifyEmail(token)

@@ -9,10 +9,10 @@ import { IToken } from "@/context";
 export async function userFeed(){
     try {
         await DBconnect();
-        const user: IToken  = await getUser();
+        const user: IToken | null  = await getUser();
         const currentUserId = user?.userID;
         if(!user){
-           throw new Error("User not logged in");
+          return {message:"User not logged in"};
         }
         const userDetails = await User.findById(currentUserId);
         const userFollowingIds = userDetails.userFollowing;

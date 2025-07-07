@@ -46,7 +46,7 @@ export function LoginForm({
   }
 
   checkUser();
-}, []);
+}, [router]);
 
 
   const form = useForm<SignFormValues>({
@@ -161,7 +161,7 @@ export function LoginForm({
       </div>
 
       <div className="text-center text-sm">
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <a href="/auth/signup" className="underline underline-offset-4">
           Sign up
         </a>

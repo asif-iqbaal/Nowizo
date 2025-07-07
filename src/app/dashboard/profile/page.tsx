@@ -4,15 +4,15 @@ import React,{useEffect,useState} from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowLeft, Bookmark, Grid3X3, Heart, MessageCircle, MoreHorizontal, Tag } from "lucide-react"
+import {  Bookmark, Grid3X3, Heart, MessageCircle, MoreHorizontal, Tag } from "lucide-react"
 import { LoggedUser } from "@/lib/action/auth"
-import Link from "next/link";
 import Spinner from "@/components/ui/loader"
-import { IUserData, IUserPosts } from "@/context"
+import { IUserData } from "@/context"
+import Image from "next/image"
 
 export default function Profile(){
     const [userData,setUserData] = useState<IUserData>();
-    const [userPosts,setUserPosts] = useState<IUserPosts>();
+    // const [userPosts,setUserPosts] = useState<IUserPosts>();
     const [activeTab, setActiveTab] = useState("posts");
     const [loading,setLoading] = useState<boolean>(false);
     useEffect(()=>{
@@ -20,7 +20,7 @@ export default function Profile(){
             setLoading(true);
              const userData = await LoggedUser();
              setUserData(userData);
-             setUserPosts(userData.userPosts)
+            //  setUserPosts(userData.userPosts)
              setLoading(false);
         }
         user();
@@ -36,16 +36,11 @@ export default function Profile(){
         )
      }
     return(
-       <div className="w-full mx-auto bg-black text-white border overflow-hidden  p-2">
+       <div className="w-full mx-auto bg-black text-white border-none overflow-hidden  p-2">
       {/* Header */}
-      <div className="p-4 border-b bg-black">
+      <div className="p-4 border-none bg-black">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Link href="/dashboard/search">
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            </Link>
             <div className="flex items-center space-x-2">
               <h1 className="text-white font-bold text-lg">{userData?.username}</h1>
             </div>
@@ -110,7 +105,7 @@ export default function Profile(){
           <div className="grid grid-cols-3 gap-1">
             {userData?.userPosts?.map((post) => (
               <div className="flex flex-col cursor-pointer" key={post._id}>
-                <img src={post.image} alt="images" className="h-[60%]" />
+                <Image src={post.image} alt="images" className="h-[60%]" />
                 <div className="text-sm font-thin font-serif p-1 ">{post.caption}</div>
                 <div className="flex ">
                   <div className="p-1">
@@ -139,7 +134,7 @@ export default function Profile(){
           <div className="p-8 text-center text-gray-500">
             <Tag className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <p className="text-lg font-medium mb-2">No tagged posts</p>
-            <p className="text-sm">Posts where you're tagged will appear here</p>
+            <p className="text-sm">Posts where you&apos;re tagged will appear here</p>
           </div>
         </TabsContent>
       </Tabs>

@@ -39,7 +39,7 @@ export default function UserSearch() {
         user.displayName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.bio?.toLowerCase().includes(searchQuery.toLowerCase()),
     )
-  }, [searchQuery])
+  }, [searchQuery,users])
 
   // const handleFollowToggle = (userId: number) => {
   //   setFollowingStates((prev) => ({
@@ -49,7 +49,7 @@ export default function UserSearch() {
   // }
 
   return (
-    <div className="w-[80vw]  mx-auto bg-black text-white border rounded-lg overflow-hidden">
+    <div className="w-[80vw]  mx-auto bg-black text-white  rounded-lg overflow-hidden">
       {/* Header */}
       {/* <div className="p-4 border-b bg-gradient-to-r from-purple-500 to-pink-500">
         <div className="flex items-center space-x-3">
@@ -151,7 +151,7 @@ export default function UserSearch() {
         <div className="p-3 border-t bg-gray-900 text-center">
           <p className="text-xs text-white">
             Found {filteredUsers.length} user{filteredUsers.length !== 1 ? "s" : ""}
-            matching "{searchQuery}"
+            matching &apos;{searchQuery}&apos;
           </p>
         </div>
       )}

@@ -10,6 +10,7 @@ import { useParams } from 'next/navigation';
 import { SeachUserPosts, followUser, UnFollowUser } from "@/lib/action/searchUser"
 import { toast } from "sonner"
 import { IUserData, IUserPosts } from "@/context"
+import Image from "next/image"
 
 export default function UserProfile() {
 
@@ -68,7 +69,7 @@ export default function UserProfile() {
 }, [id,refreshKey]);
 
   return (
-  <div className="w-full mx-auto bg-black text-white border overflow-hidden  p-2">
+  <div className="w-full mx-auto bg-black text-white  overflow-hidden  p-2">
       {/* Header */}
       <div className="p-4 border-b bg-black">
         <div className="flex items-center justify-between">
@@ -165,7 +166,7 @@ export default function UserProfile() {
           <div className="grid grid-cols-3 gap-1">
             {usersPosts?.map((post) => (
               <div className="flex flex-col cursor-pointer" key={post._id}>
-                <img src={post.image} alt="images" className="h-[60%]" />
+                <Image src={post.image} alt="images" className="h-[60%]" />
                 <div className="text-sm font-thin font-serif p-1 ">{post.caption}</div>
                 <div className="flex ">
                   <div className="p-1">
@@ -194,7 +195,7 @@ export default function UserProfile() {
           <div className="p-8 text-center text-gray-500">
             <Tag className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <p className="text-lg font-medium mb-2">No tagged posts</p>
-            <p className="text-sm">Posts where you're tagged will appear here</p>
+            <p className="text-sm">Posts where you&apos;re tagged will appear here</p>
           </div>
         </TabsContent>
       </Tabs>

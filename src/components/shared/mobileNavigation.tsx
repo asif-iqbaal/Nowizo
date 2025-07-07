@@ -43,6 +43,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreatePostSchema } from "@/validation";
 import { z } from "zod";
+import Image from "next/image";
 
 const items = [
   {
@@ -224,7 +225,7 @@ export default function MobileNavigation(){
                       <div>
                        {preview && (
                           <div className="mb-4">
-                            <img
+                            <Image
                               src={preview}
                               alt="Preview"
                               className="w-full h-64 object-cover rounded-lg"

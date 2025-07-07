@@ -9,10 +9,10 @@ import cloudinary from '@/cloaudinary/cloudinary'; // ✅ default import now
 import { IToken } from '@/context';
 import { UploadApiResponse } from 'cloudinary';
 
-export async function PostContent( props: { file?: File; caption: String; }) {
+export async function PostContent( props: { file?: File; caption: string; }) {
   try {
     await DBconnect();
-    const user:IToken = await getUser();
+    const user:IToken | null = await getUser();
     if (!user) {
       redirect('/auth/login');
     }
