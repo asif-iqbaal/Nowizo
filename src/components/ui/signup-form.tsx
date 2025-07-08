@@ -28,7 +28,8 @@ export function SignForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
-  const [loading,setLoading] = useState<boolean>(false);
+  // const [loading,setLoading] = useState<boolean>(false);
+  const [login,setLogin] = useState<boolean>(false);
 
   const form = useForm<SignFormValues>({
     resolver: zodResolver(SignupSchema),
@@ -42,14 +43,16 @@ export function SignForm({
 
   const onSubmit = async (data: SignFormValues) => {
     try {
-      setLoading(true)
+      setLogin(true);
+      // setLoading(true)
       const user = await createUser(data)
       if(user.message === "User already exist"){
         toast(user.message);
-        setLoading(false);
+        // setLoading(false);
       }else{
         toast("Signed Up Successfully \n Please Verify yourself from email")
-        setLoading(false);
+        // setLoading(false);
+        setLogin(false);
       }
     } catch (error) {
        if (error instanceof Error) {
@@ -57,18 +60,20 @@ export function SignForm({
               } else {
                 toast("An unexpected error occurred");
               }
+              setLogin(false);
     } finally{
-      setLoading(false);
+      // setLoading(false);
+      setLogin(false);
     }
   };
 
-   if(loading){
-      return(
-        <>
-        <div className="w-screen h-screen"><Spinner /></div>
-        </>
-      )
-    }
+  //  if(loading){
+  //     return(
+  //       <>
+  //       <div className="w-screen h-screen"><Spinner /></div>
+  //       </>
+  //     )
+  //   }
 
   return (
     <div className={cn("w-full max-w-md space-y-6 text-white", className)} >
@@ -137,9 +142,9 @@ export function SignForm({
             )}
           />
           
-          <Button type="submit" className="w-full">
+          {!login ? <Button type="submit" className="w-full">
             Sign up
-          </Button>
+          </Button> : <Button className="w-full "> <Spinner /> </Button>}
         </form>
       </Form>
 
