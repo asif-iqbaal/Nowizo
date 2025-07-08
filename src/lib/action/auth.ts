@@ -44,7 +44,7 @@ export async function createUser(props:ICreateUser){
             {expiresIn:'2h'}
         );
         
-       const verificationLink = `http://localhost:3000/verify-email?token=${token}`;
+       const verificationLink = `${process.env.SERVER_URL}/verify-email?token=${token}`;
        sendVerificationEmail(email, verificationLink)
                 .then(() => console.log("✅ Email sent!"))
                 .catch((err) => console.error("❌ Error sending email:", err));
