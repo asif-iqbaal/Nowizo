@@ -223,7 +223,7 @@ export function LeftNavigation({
             <DialogTitle>Create Post</DialogTitle>
             <DialogDescription>
             <Form {...form}>
-            <form onSubmit={form.handleSubmit(() => handleSubmit)}>
+            <form onSubmit={form.handleSubmit(handleSubmit)}>
              { step == 1 &&
              <>
             <FormField
