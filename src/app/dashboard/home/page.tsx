@@ -50,7 +50,7 @@ export default function HomeFeed() {
 
       {/* Feed */}
       <ScrollArea className="h-full border-none">
-        <div className="divide-y md:px-10 border-none">
+        <div className="divide-y md:px-90 border-none">
           {posts?.map((post) => (
             <Card key={post._id} className="border-0 rounded-none shadow-none  bg-black text-white">
               {/* Post Header */}
