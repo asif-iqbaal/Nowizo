@@ -21,6 +21,8 @@ export default function HomeFeed() {
       const posts = await userFeed();
       if(posts){
       setPosts(posts);
+      }else{
+      posts.length === 0;
       }
       setIsLoading(false);
     }
