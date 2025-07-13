@@ -16,8 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { FcGoogle } from "react-icons/fc";
-import { Facebook } from "lucide-react";
 import { LoginSchema } from "@/validation";
 import { loginUser } from "@/lib/action/auth";
 import { getUser } from "@/lib/auth";
