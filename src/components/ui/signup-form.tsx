@@ -152,12 +152,12 @@ export function SignForm({
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
         </div>
-        <span className="relative bg-background px-2 text-muted-foreground">
+{/*         <span className="relative bg-background px-2 text-muted-foreground">
           Or continue with
-        </span>
+        </span> */}
       </div>
 
-      <div className="flex flex-col gap-2 text-black">
+{/*       <div className="flex flex-col gap-2 text-black">
         <Button variant="outline" className="w-full">
           <FcGoogle className="mr-2" size={20} />
           Sign up with Google
@@ -166,7 +166,7 @@ export function SignForm({
           <Facebook className="mr-2" size={20} />
           Sign up with Facebook
         </Button>
-      </div>
+      </div> */}
 
       <div className="text-center text-sm">
         Already have an account?{" "}
