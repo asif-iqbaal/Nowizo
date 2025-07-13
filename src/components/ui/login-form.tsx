@@ -144,12 +144,12 @@ export function LoginForm({
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
         </div>
-        <span className="relative bg-background px-2 text-muted-foreground">
+{/*         <span className="relative bg-background px-2 text-muted-foreground">
           Or continue with
-        </span>
+        </span> */}
       </div>
 
-      <div className="flex flex-col gap-2">
+{/*       <div className="flex flex-col gap-2">
         <Button variant="outline" className="w-full bg-black text-white">
           <FcGoogle className="mr-2" size={20} />
           Sign up with Google
@@ -158,7 +158,7 @@ export function LoginForm({
           <Facebook className="mr-2" size={20} />
           Sign up with Facebook
         </Button>
-      </div>
+      </div> */}
 
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
