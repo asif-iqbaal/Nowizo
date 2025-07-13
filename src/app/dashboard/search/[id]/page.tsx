@@ -16,7 +16,7 @@ export default function UserProfile() {
 
   const params = useParams();
   const id = params.id as string;
-
+  console.log(id);
   const [userData,setUserData] = useState<IUserData>();
   const [usersPosts,setUsersPosts] = useState<IUserPosts[]>([]);
   const [isFollowing, setIsFollowing] = useState<boolean>(false)
@@ -63,7 +63,6 @@ export default function UserProfile() {
     }else{
       setIsFollowing(false);
     }
-    
   };
   fetchUser();
 }, [id,refreshKey]);
