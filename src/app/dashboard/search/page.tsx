@@ -14,7 +14,6 @@ export default function UserSearch() {
   useEffect(()=>{
     const AllUsers = async () => {
       const response = await GetUsers();
-      console.log(response);
      if(Array.isArray(response)){
         setUsers(response);
      }else{
